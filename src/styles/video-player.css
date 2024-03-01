@@ -17,6 +17,10 @@
   gap: 1rem;
   display: flex;
   align-items: center;
+  padding-block: var(--spacing);
+  border-radius: var(--border-radius);
+  background-color: var(--card-bg-color);
+  padding-inline: calc(var(--spacing) * 2);
 }
 
 .play-button {
