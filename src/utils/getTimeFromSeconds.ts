@@ -1,7 +1,4 @@
 function getTimeFromSeconds(seconds: number) {
-  if (typeof seconds !== "number" || isNaN(seconds)) {
-    throw new Error("Input must be a number");
-  }
   seconds = Math.max(0, seconds);
 
   const minutes = Math.floor(seconds / 60);
