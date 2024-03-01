@@ -1,0 +1,20 @@
+.trimmer-handler {
+  z-index: 20;
+  height: 100%;
+  position: absolute;
+  box-shadow: var(--shadow-color);
+  border-radius: var(--border-radius);
+  background-color: var(--accent-color);
+}
+
+.dragging {
+  background-color: var(--primary-color);
+}
+
+#trimmer-start-handler {
+  left: 0;
+}
+
+#trimmer-end-handler {
+  left: 0;
+}

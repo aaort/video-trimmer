@@ -1,0 +1,212 @@
+import TrimmerHandler, {
+  TRIMMER_HANDLER_WIDTH,
+} from "@components/TrimmerHandler";
+import useRefs from "@hooks/useRefs";
+import useTrimmer from "@hooks/useTrimmer";
+import useVideo from "@hooks/useVideo";
+import "@styles/trimmer.css";
+import { getRoundedTimePercentage } from "@utils/getRoundedNumPercentage";
+import { MouseEventHandler, useEffect, useMemo } from "react";
+
+type DivMouseEventHandler = MouseEventHandler<HTMLDivElement>;
+
+function Trimmer() {
+  const {
+    trimmerPortion,
+    trimmerContainer,
+    trimmerEndHandler,
+    trimmerStartHandler,
+  } = useRefs();
+
+  const { video, dispatch: videoDispatch } = useVideo();
+
+  const [trimmer, trimmerDispatch] = useTrimmer();
+
+  useEffect(() => {
+    trimmerDispatch({
+      type: "trim",
+      payload: {
+        start: { x: 0 },
+        end: {
+          x: trimmerContainer.current!.clientWidth - TRIMMER_HANDLER_WIDTH,
+        },
+      },
+    });
+  }, [videoDispatch, trimmerContainer, trimmerDispatch]);
+
+  const currentDraggedItem = useMemo(
+    () => ({
+      endHandler: trimmer.endHandler.isDragging,
+      startHandler: trimmer.startHandler.isDragging,
+      trimmerPortion: trimmer.trimmerPortion.isDragging,
+    }),
+    [trimmer]
+  );
+
+  const handleTrimmerHandlerMove: DivMouseEventHandler = (event) => {
+    if (!Object.values(currentDraggedItem).some(Boolean)) return;
+
+    const trimStartDragged = currentDraggedItem.startHandler
+      ? event.clientX - trimmer.startHandler.initialX
+      : currentDraggedItem.trimmerPortion
+      ? trimmer.startHandler.x + event.movementX
+      : trimmer.startHandler.x;
+
+    const trimEndDragged = currentDraggedItem.endHandler
+      ? event.clientX - trimmer.endHandler.initialX
+      : currentDraggedItem.trimmerPortion
+      ? trimmer.endHandler.x + event.movementX
+      : trimmer.endHandler.x;
+
+    if (trimEndDragged - trimStartDragged <= 50) {
+      return;
+    }
+
+    if (
+      Math.round(trimStartDragged) <=
+      Math.round(trimmerContainer.current!.clientLeft)
+    ) {
+      return;
+    }
+
+    if (
+      trimEndDragged >=
+      Math.round(
+        trimmerContainer.current!.clientWidth +
+          trimmerContainer.current!.offsetLeft -
+          50
+      )
+    ) {
+      return;
+    }
+
+    trimmerDispatch({
+      type: "trim",
+      payload: {
+        start: {
+          x: trimStartDragged,
+        },
+        end: {
+          x: trimEndDragged,
+        },
+      },
+    });
+  };
+
+  const handleMouseDown: DivMouseEventHandler = (event) => {
+    const target = event.target as HTMLDivElement;
+    const targetId = target.id;
+
+    target.classList.add("dragging");
+
+    const isDraggingTrimmerPortion = targetId === "trimmer-portion";
+    const isDraggingEndHandler = targetId === "trimmer-end-handler";
+    const isDraggingStartHandler = targetId === "trimmer-start-handler";
+
+    trimmerDispatch({
+      type: "drag",
+      payload: {
+        endDragging: isDraggingEndHandler,
+        startDragging: isDraggingStartHandler,
+        trimmerPortionDragging: isDraggingTrimmerPortion,
+      },
+    });
+
+    const targetRect = target.getBoundingClientRect();
+
+    trimmerDispatch({
+      type: "trim",
+      payload: {
+        start: {
+          initialX: isDraggingStartHandler
+            ? targetRect.left +
+              targetRect.width -
+              event.clientX +
+              TRIMMER_HANDLER_WIDTH
+            : trimmer.startHandler.initialX,
+        },
+        end: {
+          initialX: isDraggingEndHandler
+            ? targetRect.left +
+              targetRect.width -
+              event.clientX +
+              TRIMMER_HANDLER_WIDTH * 2
+            : trimmer.endHandler.initialX,
+        },
+      },
+    });
+  };
+
+  const trimmerPortionWidth =
+    trimmer.endHandler.x - trimmer.startHandler.x + TRIMMER_HANDLER_WIDTH;
+
+  const handleMouseUp: DivMouseEventHandler = () => {
+    const targets = document.getElementsByClassName("trimmer-handler");
+
+    for (let i = 0; i < targets.length; i++) {
+      const target = targets[i];
+      target.classList.remove("dragging");
+    }
+
+    const selectedTrimStartPercentage = getRoundedTimePercentage(
+      trimmer.startHandler.x,
+      trimmerContainer.current?.clientWidth || 1
+    );
+
+    const selectedTrimEndPercentage = getRoundedTimePercentage(
+      trimmer.endHandler.x,
+      trimmerContainer.current?.clientWidth || 1
+    );
+
+    const selectedTrimStartTime =
+      (video.videoDuration * selectedTrimStartPercentage) / 100;
+    const selectedTrimEndTime =
+      (video.videoDuration * selectedTrimEndPercentage) / 100;
+
+    videoDispatch({
+      type: "trim",
+      payload: {
+        end: selectedTrimEndTime,
+        start: selectedTrimStartTime,
+      },
+    });
+
+    trimmerDispatch({ type: "stop", payload: undefined });
+  };
+
+  return (
+    <div
+      ref={trimmerContainer}
+      id="trimmer-container"
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleTrimmerHandlerMove}
+      onMouseLeave={() => trimmerDispatch({ type: "stop", payload: undefined })}
+    >
+      <TrimmerHandler
+        forSide="start"
+        left={trimmer.startHandler.x}
+        ref={trimmerStartHandler}
+        onMouseDown={handleMouseDown}
+      />
+
+      <div
+        id="trimmer-portion"
+        ref={trimmerPortion}
+        style={{
+          left: trimmer.startHandler.x,
+          width: trimmerPortionWidth,
+        }}
+        onMouseDown={handleMouseDown}
+      />
+
+      <TrimmerHandler
+        forSide="end"
+        ref={trimmerEndHandler}
+        left={trimmer.endHandler.x}
+        onMouseDown={handleMouseDown}
+      />
+    </div>
+  );
+}
+
+export default Trimmer;

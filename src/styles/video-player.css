@@ -1,0 +1,28 @@
+.video-player-container {
+  gap: 2rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#video-player {
+  border-radius: var(--border-radius);
+}
+
+.play-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.play-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.play-button svg:hover {
+  filter: drop-shadow(var(--shadow-color));
+}
