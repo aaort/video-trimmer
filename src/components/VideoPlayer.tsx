@@ -55,7 +55,7 @@ function VideoPlayer() {
   return (
     <div className="video-player-container">
       <video
-        width="80%"
+        width="70%"
         id="video-player"
         ref={videoPlayer}
         onTimeUpdate={handleTimeUpdate}
