@@ -27,8 +27,8 @@ function VideoPlayer() {
 
   useEffect(() => {
     setPlayedLeft({
-      played: getTimeFromSeconds(video.trimStart),
       left: getTimeFromSeconds(video.trimEnd),
+      played: getTimeFromSeconds(video.trimStart),
     });
 
     videoPlayer.current!.currentTime = video.trimStart;
@@ -39,10 +39,10 @@ function VideoPlayer() {
       ...playedLeft,
       played: getTimeFromSeconds(videoPlayer.current!.currentTime),
     });
+
     if (videoPlayer.current!.currentTime >= video.trimEnd) {
-      videoPlayer.current!.pause();
       setIsPlaying(false);
-      video;
+      videoPlayer.current!.pause();
     }
   };
 
