@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-function useRefs() {
+function useTrimmerRefs() {
   const trimmerPortion = useRef<HTMLDivElement>(null);
   const trimmerContainer = useRef<HTMLDivElement>(null);
   const trimmerEndHandler = useRef<HTMLDivElement>(null);
@@ -14,4 +14,4 @@ function useRefs() {
   };
 }
 
-export default useRefs;
+export default useTrimmerRefs;

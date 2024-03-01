@@ -1,7 +1,7 @@
 import TrimmerHandler, {
   TRIMMER_HANDLER_WIDTH,
 } from "@components/TrimmerHandler";
-import useRefs from "@hooks/useRefs";
+import useTrimmerRefs from "@hooks/useTrimmerRefs";
 import useTrimmer from "@hooks/useTrimmer";
 import useVideo from "@hooks/useVideo";
 import "@styles/trimmer.css";
@@ -16,7 +16,7 @@ function Trimmer() {
     trimmerContainer,
     trimmerEndHandler,
     trimmerStartHandler,
-  } = useRefs();
+  } = useTrimmerRefs();
 
   const { video, dispatch: videoDispatch } = useVideo();
 
