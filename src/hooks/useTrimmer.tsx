@@ -51,7 +51,7 @@ interface TrimAction {
 
 interface StopAction {
   type: "stop";
-  payload: undefined;
+  payload?: undefined;
 }
 
 type Action = DragAction | TrimAction | StopAction;

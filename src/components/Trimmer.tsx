@@ -166,7 +166,7 @@ function Trimmer() {
       },
     });
 
-    trimmerDispatch({ type: "stop", payload: undefined });
+    trimmerDispatch({ type: "stop" });
   };
 
   return (
@@ -175,7 +175,7 @@ function Trimmer() {
       id="trimmer-container"
       onMouseUp={handleMouseUp}
       onMouseMove={handleTrimmerHandlerMove}
-      onMouseLeave={() => trimmerDispatch({ type: "stop", payload: undefined })}
+      onMouseLeave={() => trimmerDispatch({ type: "stop" })}
     >
       <TrimmerHandler
         forSide="start"
