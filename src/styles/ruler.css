@@ -7,4 +7,6 @@
   padding-inline: var(--spacing);
   justify-content: space-between;
   background: var(--card-bg-color);
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
 }
