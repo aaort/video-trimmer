@@ -2,6 +2,7 @@
   width: 100%;
   height: 50px;
   display: flex;
+  user-select: none;
   padding-top: var(--spacing);
   padding-inline: var(--spacing);
   justify-content: space-between;
