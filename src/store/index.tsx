@@ -9,7 +9,7 @@ interface Video {
 }
 
 const initialVideo: Video = {
-  trimEnd: 60,
+  trimEnd: 15,
   trimStart: 0,
   videoDuration: 15,
   videoUrl:
