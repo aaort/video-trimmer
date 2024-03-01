@@ -46,6 +46,8 @@ function Trimmer() {
   const handleTrimmerHandlerMove: DivMouseEventHandler = (event) => {
     if (!Object.values(currentDraggedItem).some(Boolean)) return;
 
+    const target = event.target as HTMLDivElement;
+
     const trimStartDragged = currentDraggedItem.startHandler
       ? event.clientX - trimmer.startHandler.initialX
       : currentDraggedItem.trimmerPortion
@@ -58,24 +60,26 @@ function Trimmer() {
       ? trimmer.endHandler.x + event.movementX
       : trimmer.endHandler.x;
 
-    if (trimEndDragged - trimStartDragged <= 50) {
+    if (trimEndDragged - trimStartDragged <= TRIMMER_HANDLER_WIDTH) {
       return;
     }
 
     if (
+      target.id === "trimmer-start-handler" &&
       Math.round(trimStartDragged) <=
-      Math.round(trimmerContainer.current!.clientLeft)
+        Math.round(trimmerContainer.current!.clientLeft)
     ) {
       return;
     }
 
     if (
+      target.id === "trimmer-end-handler" &&
       trimEndDragged >=
-      Math.round(
-        trimmerContainer.current!.clientWidth +
-          trimmerContainer.current!.offsetLeft -
-          50
-      )
+        Math.round(
+          trimmerContainer.current!.clientWidth +
+            trimmerContainer.current!.offsetLeft -
+            TRIMMER_HANDLER_WIDTH
+        )
     ) {
       return;
     }
