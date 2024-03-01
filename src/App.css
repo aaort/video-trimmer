@@ -9,3 +9,17 @@
   align-items: center;
   flex-direction: column;
 }
+
+.video-trimmer-ruler-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.divider {
+  height: 1px;
+  width: 100%;
+  background-color: var(--card-bg-color);
+  border-top: 1px dashed var(--primary-color);
+}

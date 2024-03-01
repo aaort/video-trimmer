@@ -11,18 +11,18 @@
 }
 
 .play-container {
+  gap: 1rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
 }
 
 .play-button {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
   padding: 0;
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
 }
 
 .play-button svg:hover {
-  filter: drop-shadow(var(--shadow-color));
+  filter: drop-shadow(var(--shadow));
 }

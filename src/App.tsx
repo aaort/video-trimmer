@@ -8,9 +8,13 @@ function App() {
     <div id="app">
       <VideoPlayer />
 
-      <Ruler />
+      <div className="video-trimmer-ruler-container">
+        <Ruler />
 
-      <Trimmer />
+        <div className="divider" />
+
+        <Trimmer />
+      </div>
     </div>
   );
 }
