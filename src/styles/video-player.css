@@ -8,7 +8,9 @@
 }
 
 #video-player {
+  box-shadow: var(--shadow);
   border-radius: var(--border-radius);
+  border: 1px solid var(--primary-color);
 }
 
 .play-container {
