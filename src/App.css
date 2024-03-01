@@ -20,6 +20,7 @@
 .divider {
   height: 1px;
   width: 100%;
+  margin-block: var(--spacing);
   background-color: var(--card-bg-color);
   border-top: 1px dashed var(--primary-color);
 }
