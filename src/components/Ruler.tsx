@@ -3,7 +3,7 @@ import "@styles/ruler.css";
 import { getVideoDurationSteps } from "@utils/getVideoDurationStep";
 
 function Ruler() {
-  const { video } = useVideo();
+  const [video] = useVideo();
 
   const { videoDuration } = video;
 

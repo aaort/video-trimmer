@@ -18,7 +18,7 @@ function Trimmer() {
     trimmerStartHandler,
   } = useTrimmerRefs();
 
-  const { video, dispatch: videoDispatch } = useVideo();
+  const [video, videoDispatch] = useVideo();
 
   const [trimmer, trimmerDispatch] = useTrimmer();
 

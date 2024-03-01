@@ -16,7 +16,7 @@ const defaultPlayedLeft: IPlayedLeft = {
 };
 
 function VideoPlayer() {
-  const { video } = useVideo();
+  const [video] = useVideo();
   const videoPlayer = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
