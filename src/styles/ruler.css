@@ -3,10 +3,10 @@
   height: 50px;
   display: flex;
   user-select: none;
-  padding-top: var(--spacing);
-  padding-inline: var(--spacing);
+  align-items: center;
   justify-content: space-between;
   background: var(--card-bg-color);
+  padding-inline: calc(var(--spacing) * 2);
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
 }
