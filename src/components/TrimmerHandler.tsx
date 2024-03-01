@@ -1,7 +1,7 @@
 import "@styles/trimmer-handler.css";
-import { ForwardedRef, forwardRef } from "react";
+import { ComponentProps, ForwardedRef, forwardRef } from "react";
 
-interface HandlerProps {
+interface HandlerProps extends ComponentProps<"div"> {
   forSide: "start" | "end";
   left: React.CSSProperties["left"];
   onMouseDown: React.ComponentProps<"div">["onMouseDown"];
@@ -10,13 +10,13 @@ interface HandlerProps {
 const TRIMMER_HANDLER_WIDTH = 20;
 
 const ids: Record<HandlerProps["forSide"], string> = {
-  start: "trimmer-start-handler",
   end: "trimmer-end-handler",
+  start: "trimmer-start-handler",
 };
 
 const TrimmerHandler = forwardRef(
   (props: HandlerProps, ref: ForwardedRef<HTMLDivElement>) => {
-    const { forSide, left, onMouseDown } = props;
+    const { forSide, left, onMouseDown, ...rest } = props;
 
     return (
       <div
@@ -25,6 +25,7 @@ const TrimmerHandler = forwardRef(
         onMouseDown={onMouseDown}
         className="trimmer-handler"
         style={{ left, width: TRIMMER_HANDLER_WIDTH }}
+        {...rest}
       />
     );
   }

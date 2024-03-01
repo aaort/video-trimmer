@@ -7,7 +7,7 @@
   background-color: var(--accent-color);
 }
 
-.dragging {
+.trimmer-handler[data-dragging="true"] {
   background-color: var(--primary-color);
 }
 

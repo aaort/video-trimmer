@@ -101,8 +101,6 @@ function Trimmer() {
     const target = event.target as HTMLDivElement;
     const targetId = target.id;
 
-    target.classList.add("dragging");
-
     const isDraggingTrimmerPortion = targetId === "trimmer-portion";
     const isDraggingEndHandler = targetId === "trimmer-end-handler";
     const isDraggingStartHandler = targetId === "trimmer-start-handler";
@@ -145,13 +143,6 @@ function Trimmer() {
     trimmer.endHandler.x - trimmer.startHandler.x + TRIMMER_HANDLER_WIDTH;
 
   const handleMouseUp: DivMouseEventHandler = () => {
-    const targets = document.getElementsByClassName("trimmer-handler");
-
-    for (let i = 0; i < targets.length; i++) {
-      const target = targets[i];
-      target.classList.remove("dragging");
-    }
-
     const selectedTrimStartPercentage = getRoundedTimePercentage(
       trimmer.startHandler.x,
       trimmerContainer.current?.clientWidth || 1
@@ -191,6 +182,7 @@ function Trimmer() {
         ref={trimmerStartHandler}
         left={trimmer.startHandler.x}
         onMouseDown={handleMouseDown}
+        data-dragging={trimmer.startHandler.isDragging}
       />
 
       <div
@@ -208,6 +200,7 @@ function Trimmer() {
         ref={trimmerEndHandler}
         left={trimmer.endHandler.x}
         onMouseDown={handleMouseDown}
+        data-dragging={trimmer.endHandler.isDragging}
       />
     </div>
   );
