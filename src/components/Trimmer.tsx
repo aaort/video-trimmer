@@ -1,8 +1,8 @@
 import TrimmerHandler, {
   TRIMMER_HANDLER_WIDTH,
 } from "@components/TrimmerHandler";
-import useTrimmerRefs from "@hooks/useTrimmerRefs";
 import useTrimmer from "@hooks/useTrimmer";
+import useTrimmerRefs from "@hooks/useTrimmerRefs";
 import useVideo from "@hooks/useVideo";
 import "@styles/trimmer.css";
 import { getRoundedTimePercentage } from "@utils/getRoundedNumPercentage";
@@ -184,8 +184,8 @@ function Trimmer() {
     >
       <TrimmerHandler
         forSide="start"
-        left={trimmer.startHandler.x}
         ref={trimmerStartHandler}
+        left={trimmer.startHandler.x}
         onMouseDown={handleMouseDown}
       />
 
@@ -193,8 +193,8 @@ function Trimmer() {
         id="trimmer-portion"
         ref={trimmerPortion}
         style={{
-          left: trimmer.startHandler.x,
           width: trimmerPortionWidth,
+          left: trimmer.startHandler.x,
         }}
         onMouseDown={handleMouseDown}
       />
