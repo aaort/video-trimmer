@@ -67,7 +67,7 @@ function Trimmer() {
     if (
       target.id === "trimmer-start-handler" &&
       Math.round(trimStartDragged) <=
-        Math.round(trimmerContainer.current!.clientLeft)
+        Math.round(trimmerContainer.current!.clientLeft) + TRIMMER_HANDLER_WIDTH
     ) {
       return;
     }
