@@ -12,7 +12,7 @@ type DivMouseEventHandler = MouseEventHandler<HTMLDivElement>;
 
 function Trimmer() {
   const {
-    trimmerPortion,
+    trimmerPortion: trimmerPortionRef,
     trimmerContainer,
     trimmerEndHandler,
     trimmerStartHandler,
@@ -43,42 +43,47 @@ function Trimmer() {
     [trimmer]
   );
 
+  const { startHandler, endHandler, trimmerPortion } = trimmer;
+
   const handleTrimmerHandlerMove: DivMouseEventHandler = (event) => {
     if (!Object.values(currentDraggedItem).some(Boolean)) return;
 
     let trimEndDragged = trimmer.endHandler.x;
     let trimStartDragged = trimmer.startHandler.x;
 
+    const { clientX, movementX } = event;
+
     if (currentDraggedItem.trimmerPortion) {
-      trimEndDragged = trimmer.endHandler.x + event.movementX;
-      trimStartDragged = trimmer.startHandler.x + event.movementX;
+      trimEndDragged = endHandler.x + movementX;
+      trimStartDragged = startHandler.x + movementX;
     } else if (currentDraggedItem.startHandler) {
-      trimStartDragged = event.clientX - trimmer.startHandler.initialX;
+      trimStartDragged = clientX - startHandler.initialX;
     } else if (currentDraggedItem.endHandler) {
-      trimEndDragged = event.clientX - trimmer.endHandler.initialX;
+      trimEndDragged = clientX - endHandler.initialX;
     }
 
     if (trimEndDragged - trimStartDragged <= TRIMMER_HANDLER_WIDTH) {
       return;
     }
 
-    const reachedStart =
-      trimStartDragged <= trimmerContainer.current!.clientLeft;
+    const trimContainer = trimmerContainer.current!;
+
+    const reachedStart = trimStartDragged <= trimContainer.clientLeft;
     const reachedEnd =
       trimEndDragged >=
-      trimmerContainer.current!.clientLeft +
-        trimmerContainer.current!.clientWidth -
+      trimContainer.clientLeft +
+        trimContainer.clientWidth -
         TRIMMER_HANDLER_WIDTH;
 
-    if (trimmer.trimmerPortion.isDragging && (reachedStart || reachedEnd)) {
+    if (trimmerPortion.isDragging && (reachedStart || reachedEnd)) {
       return;
     }
 
-    if (trimmer.startHandler.isDragging && reachedStart) {
+    if (startHandler.isDragging && reachedStart) {
       return;
     }
 
-    if (trimmer.endHandler.isDragging && reachedEnd) return;
+    if (endHandler.isDragging && reachedEnd) return;
 
     trimmerDispatch({
       type: "trim",
@@ -93,13 +98,13 @@ function Trimmer() {
     });
 
     const selectedTrimStartPercentage = getRoundedTimePercentage(
-      trimmer.startHandler.x,
-      trimmerContainer.current?.clientWidth || 1
+      startHandler.x,
+      trimContainer.clientWidth || 1
     );
 
     const selectedTrimEndPercentage = getRoundedTimePercentage(
       trimmer.endHandler.x,
-      trimmerContainer.current?.clientWidth || 1
+      trimContainer.clientWidth || 1
     );
 
     const selectedTrimEndTime =
@@ -135,8 +140,8 @@ function Trimmer() {
 
     const targetRect = target.getBoundingClientRect();
 
-    let endHandlerInitialX = trimmer.endHandler.initialX;
-    let startHandlerInitialX = trimmer.startHandler.initialX;
+    let endHandlerInitialX = endHandler.initialX;
+    let startHandlerInitialX = startHandler.initialX;
 
     if (isDraggingStartHandler) {
       startHandlerInitialX =
@@ -168,7 +173,7 @@ function Trimmer() {
   };
 
   const trimmerPortionWidth =
-    trimmer.endHandler.x - trimmer.startHandler.x + TRIMMER_HANDLER_WIDTH;
+    endHandler.x - startHandler.x + TRIMMER_HANDLER_WIDTH;
 
   const handleStopDragging: DivMouseEventHandler = () => {
     trimmerDispatch({ type: "stop" });
@@ -184,28 +189,28 @@ function Trimmer() {
     >
       <TrimmerHandler
         forSide="start"
+        left={startHandler.x}
         ref={trimmerStartHandler}
-        left={trimmer.startHandler.x}
         onMouseDown={handleMouseDown}
-        data-dragging={trimmer.startHandler.isDragging}
+        data-dragging={startHandler.isDragging}
       />
 
       <div
         id="trimmer-portion"
-        ref={trimmerPortion}
+        ref={trimmerPortionRef}
         style={{
+          left: startHandler.x,
           width: trimmerPortionWidth,
-          left: trimmer.startHandler.x,
         }}
         onMouseDown={handleMouseDown}
       />
 
       <TrimmerHandler
         forSide="end"
+        left={endHandler.x}
         ref={trimmerEndHandler}
-        left={trimmer.endHandler.x}
         onMouseDown={handleMouseDown}
-        data-dragging={trimmer.endHandler.isDragging}
+        data-dragging={endHandler.isDragging}
       />
     </div>
   );
