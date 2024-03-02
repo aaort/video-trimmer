@@ -91,6 +91,29 @@ function Trimmer() {
         },
       },
     });
+
+    const selectedTrimStartPercentage = getRoundedTimePercentage(
+      trimmer.startHandler.x,
+      trimmerContainer.current?.clientWidth || 1
+    );
+
+    const selectedTrimEndPercentage = getRoundedTimePercentage(
+      trimmer.endHandler.x,
+      trimmerContainer.current?.clientWidth || 1
+    );
+
+    const selectedTrimStartTime =
+      (video.videoDuration * selectedTrimStartPercentage) / 100;
+    const selectedTrimEndTime =
+      (video.videoDuration * selectedTrimEndPercentage) / 100;
+
+    videoDispatch({
+      type: "trim",
+      payload: {
+        end: selectedTrimEndTime,
+        start: selectedTrimStartTime,
+      },
+    });
   };
 
   const handleMouseDown: DivMouseEventHandler = (event) => {
@@ -148,29 +171,6 @@ function Trimmer() {
     trimmer.endHandler.x - trimmer.startHandler.x + TRIMMER_HANDLER_WIDTH;
 
   const handleMouseUp: DivMouseEventHandler = () => {
-    const selectedTrimStartPercentage = getRoundedTimePercentage(
-      trimmer.startHandler.x,
-      trimmerContainer.current?.clientWidth || 1
-    );
-
-    const selectedTrimEndPercentage = getRoundedTimePercentage(
-      trimmer.endHandler.x,
-      trimmerContainer.current?.clientWidth || 1
-    );
-
-    const selectedTrimStartTime =
-      (video.videoDuration * selectedTrimStartPercentage) / 100;
-    const selectedTrimEndTime =
-      (video.videoDuration * selectedTrimEndPercentage) / 100;
-
-    videoDispatch({
-      type: "trim",
-      payload: {
-        end: selectedTrimEndTime,
-        start: selectedTrimStartTime,
-      },
-    });
-
     trimmerDispatch({ type: "stop" });
   };
 
