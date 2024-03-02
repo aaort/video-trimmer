@@ -30,6 +30,11 @@
   background-color: transparent;
 }
 
+.play-button:disabled svg {
+  fill: var(--bg-color);
+  stroke: var(--secondary-color);
+}
+
 .play-button svg:hover {
   filter: drop-shadow(var(--shadow));
 }

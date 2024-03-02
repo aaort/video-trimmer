@@ -6,24 +6,31 @@ import PlayIcon from "./icons/PlayIcon";
 import StopIcon from "./icons/StopIcon";
 
 interface IPlayedLeft {
-  played: string;
   left: string;
+  played: string;
 }
 
 const defaultPlayedLeft: IPlayedLeft = {
-  played: "00:00",
   left: "00:00",
+  played: "00:00",
 };
 
 function VideoPlayer() {
   const [video] = useVideo();
   const videoPlayer = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isPlayDisabled, setIsPlayDisabled] = useState<boolean>(false);
 
   const [playedLeft, setPlayedLeft] = useState({
     ...defaultPlayedLeft,
     left: getTimeFromSeconds(video.trimEnd),
   });
+
+  useEffect(() => {
+    if (videoPlayer.current!.currentTime < video.trimEnd) {
+      setIsPlayDisabled(false);
+    }
+  }, [video]);
 
   useEffect(() => {
     setPlayedLeft({
@@ -42,6 +49,7 @@ function VideoPlayer() {
 
     if (videoPlayer.current!.currentTime >= video.trimEnd) {
       setIsPlaying(false);
+      setIsPlayDisabled(true);
       videoPlayer.current!.pause();
     }
   };
@@ -64,7 +72,11 @@ function VideoPlayer() {
       </video>
 
       <div className="play-container">
-        <button className="play-button" onClick={handlePlayStopClick}>
+        <button
+          className="play-button"
+          disabled={isPlayDisabled}
+          onClick={handlePlayStopClick}
+        >
           {isPlaying ? <StopIcon /> : <PlayIcon />}
         </button>
 
