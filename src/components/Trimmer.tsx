@@ -46,43 +46,39 @@ function Trimmer() {
   const handleTrimmerHandlerMove: DivMouseEventHandler = (event) => {
     if (!Object.values(currentDraggedItem).some(Boolean)) return;
 
-    const target = event.target as HTMLDivElement;
+    let trimEndDragged = trimmer.endHandler.x;
+    let trimStartDragged = trimmer.startHandler.x;
 
-    const trimStartDragged = currentDraggedItem.startHandler
-      ? event.clientX - trimmer.startHandler.initialX
-      : currentDraggedItem.trimmerPortion
-      ? trimmer.startHandler.x + event.movementX
-      : trimmer.startHandler.x;
-
-    const trimEndDragged = currentDraggedItem.endHandler
-      ? event.clientX - trimmer.endHandler.initialX
-      : currentDraggedItem.trimmerPortion
-      ? trimmer.endHandler.x + event.movementX
-      : trimmer.endHandler.x;
+    if (currentDraggedItem.trimmerPortion) {
+      trimEndDragged = trimmer.endHandler.x + event.movementX;
+      trimStartDragged = trimmer.startHandler.x + event.movementX;
+    } else if (currentDraggedItem.startHandler) {
+      trimStartDragged = event.clientX - trimmer.startHandler.initialX;
+    } else if (currentDraggedItem.endHandler) {
+      trimEndDragged = event.clientX - trimmer.endHandler.initialX;
+    }
 
     if (trimEndDragged - trimStartDragged <= TRIMMER_HANDLER_WIDTH) {
       return;
     }
 
-    if (
-      target.id === "trimmer-start-handler" &&
-      Math.round(trimStartDragged) <=
-        Math.round(trimmerContainer.current!.clientLeft) + TRIMMER_HANDLER_WIDTH
-    ) {
+    const reachedStart =
+      trimStartDragged <= trimmerContainer.current!.clientLeft;
+    const reachedEnd =
+      trimEndDragged >=
+      trimmerContainer.current!.clientLeft +
+        trimmerContainer.current!.clientWidth -
+        TRIMMER_HANDLER_WIDTH;
+
+    if (trimmer.trimmerPortion.isDragging && (reachedStart || reachedEnd)) {
       return;
     }
 
-    if (
-      target.id === "trimmer-end-handler" &&
-      trimEndDragged >=
-        Math.round(
-          trimmerContainer.current!.clientWidth +
-            trimmerContainer.current!.offsetLeft -
-            TRIMMER_HANDLER_WIDTH
-        )
-    ) {
+    if (trimmer.startHandler.isDragging && reachedStart) {
       return;
     }
+
+    if (trimmer.endHandler.isDragging && reachedEnd) return;
 
     trimmerDispatch({
       type: "trim",
@@ -116,24 +112,33 @@ function Trimmer() {
 
     const targetRect = target.getBoundingClientRect();
 
+    let endHandlerInitialX = trimmer.endHandler.initialX;
+    let startHandlerInitialX = trimmer.startHandler.initialX;
+
+    if (isDraggingStartHandler) {
+      startHandlerInitialX =
+        targetRect.left +
+        targetRect.width -
+        event.clientX +
+        TRIMMER_HANDLER_WIDTH;
+    }
+
+    if (isDraggingEndHandler) {
+      endHandlerInitialX =
+        targetRect.left +
+        targetRect.width -
+        event.clientX +
+        TRIMMER_HANDLER_WIDTH * 2;
+    }
+
     trimmerDispatch({
       type: "trim",
       payload: {
         start: {
-          initialX: isDraggingStartHandler
-            ? targetRect.left +
-              targetRect.width -
-              event.clientX +
-              TRIMMER_HANDLER_WIDTH
-            : trimmer.startHandler.initialX,
+          initialX: startHandlerInitialX,
         },
         end: {
-          initialX: isDraggingEndHandler
-            ? targetRect.left +
-              targetRect.width -
-              event.clientX +
-              TRIMMER_HANDLER_WIDTH * 2
-            : trimmer.endHandler.initialX,
+          initialX: endHandlerInitialX,
         },
       },
     });
