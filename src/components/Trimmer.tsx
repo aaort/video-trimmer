@@ -83,11 +83,11 @@ function Trimmer() {
     trimmerDispatch({
       type: "trim",
       payload: {
-        start: {
-          x: trimStartDragged,
-        },
         end: {
           x: trimEndDragged,
+        },
+        start: {
+          x: trimStartDragged,
         },
       },
     });
@@ -102,10 +102,10 @@ function Trimmer() {
       trimmerContainer.current?.clientWidth || 1
     );
 
-    const selectedTrimStartTime =
-      (video.videoDuration * selectedTrimStartPercentage) / 100;
     const selectedTrimEndTime =
       (video.videoDuration * selectedTrimEndPercentage) / 100;
+    const selectedTrimStartTime =
+      (video.videoDuration * selectedTrimStartPercentage) / 100;
 
     videoDispatch({
       type: "trim",
@@ -157,11 +157,11 @@ function Trimmer() {
     trimmerDispatch({
       type: "trim",
       payload: {
-        start: {
-          initialX: startHandlerInitialX,
-        },
         end: {
           initialX: endHandlerInitialX,
+        },
+        start: {
+          initialX: startHandlerInitialX,
         },
       },
     });
@@ -170,7 +170,7 @@ function Trimmer() {
   const trimmerPortionWidth =
     trimmer.endHandler.x - trimmer.startHandler.x + TRIMMER_HANDLER_WIDTH;
 
-  const handleMouseUp: DivMouseEventHandler = () => {
+  const handleStopDragging: DivMouseEventHandler = () => {
     trimmerDispatch({ type: "stop" });
   };
 
@@ -178,9 +178,9 @@ function Trimmer() {
     <div
       ref={trimmerContainer}
       id="trimmer-container"
-      onMouseUp={handleMouseUp}
+      onMouseUp={handleStopDragging}
+      onMouseLeave={handleStopDragging}
       onMouseMove={handleTrimmerHandlerMove}
-      onMouseLeave={() => trimmerDispatch({ type: "stop" })}
     >
       <TrimmerHandler
         forSide="start"
