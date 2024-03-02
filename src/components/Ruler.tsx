@@ -7,13 +7,10 @@ function Ruler() {
 
   const { videoDuration } = video;
 
-  const isSeconds = videoDuration < 180;
-  const isHours = videoDuration > 3600;
-
   const steps = getVideoDurationSteps(videoDuration);
 
   const filteredSteps = steps.map((step) => {
-    return `${step}${isSeconds ? "s" : isHours ? "h" : "m"}`;
+    return `${step}s`;
   });
 
   return (
