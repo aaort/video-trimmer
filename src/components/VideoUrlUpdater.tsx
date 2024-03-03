@@ -5,7 +5,7 @@ import { ChangeEventHandler, FormEventHandler, useState } from "react";
 
 interface FormData extends Pick<IVideo, "videoUrl" | "videoDuration"> {}
 
-function VideoUrlUpdater() {
+function VideoURLUpdater() {
   const [, dispatch] = useVideo();
   const [formData, setFormData] = useState<FormData>({
     videoUrl: "",
@@ -62,4 +62,4 @@ function VideoUrlUpdater() {
   );
 }
 
-export default VideoUrlUpdater;
+export default VideoURLUpdater;

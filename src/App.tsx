@@ -1,15 +1,15 @@
 import Ruler from "@components/Ruler";
 import Trimmer from "@components/Trimmer";
 import VideoPlayer from "@components/VideoPlayer";
+import VideoURLUpdater from "@components/VideoURLUpdater";
 import "./App.css";
-import VideoUrlUpdater from "@components/VideoUrlUpdater";
 
 function App() {
   return (
     <div className="app">
       <VideoPlayer />
 
-      <VideoUrlUpdater />
+      <VideoURLUpdater />
 
       <div className="video-trimmer-ruler-container">
         <Ruler />
