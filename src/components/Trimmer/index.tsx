@@ -70,8 +70,8 @@ function Trimmer() {
     [trimmer, trimmerDispatch]
   );
 
-  const trimmerMouseMoveListener = useCallback(
-    (event: MouseEvent) =>
+  useEffect(() => {
+    const trimmerMouseMoveListener = (event: MouseEvent) =>
       handleMouseMove({
         event,
         video,
@@ -81,19 +81,8 @@ function Trimmer() {
         trimmerDispatch,
         trimmerContainer,
         currentDraggedItem,
-      }),
-    [
-      currentDraggedItem,
-      trimmer,
-      trimmerContainer,
-      trimmerDispatch,
-      trimmerPortion,
-      video,
-      videoDispatch,
-    ]
-  );
+      });
 
-  useEffect(() => {
     document.addEventListener("mouseup", handleStopDragging);
     document.addEventListener("mousedown", trimmerMouseDownListener);
     document.addEventListener("mousemove", trimmerMouseMoveListener);
@@ -103,7 +92,17 @@ function Trimmer() {
       document.removeEventListener("mousedown", trimmerMouseDownListener);
       document.removeEventListener("mousemove", trimmerMouseMoveListener);
     };
-  }, [handleStopDragging, trimmerMouseDownListener, trimmerMouseMoveListener]);
+  }, [
+    video,
+    trimmer,
+    videoDispatch,
+    trimmerPortion,
+    trimmerDispatch,
+    trimmerContainer,
+    handleStopDragging,
+    currentDraggedItem,
+    trimmerMouseDownListener,
+  ]);
 
   const trimmerPortionWidth =
     endHandler.x - startHandler.x + TRIMMER_HANDLER_WIDTH;
