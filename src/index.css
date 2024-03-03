@@ -39,3 +39,17 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
+
+button {
+  border: none;
+  cursor: pointer;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: var(--border-radius);
+  background-color: var(--secondary-color);
+  padding: calc(2 * var(--spacing)) calc(4 * var(--spacing));
+}
+
+button:hover {
+  box-shadow: var(--shadow);
+}
