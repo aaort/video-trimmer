@@ -40,13 +40,13 @@ function VideoUrlUpdater() {
           <input
             type="text"
             onChange={handleUrlChange}
-            placeholder="Enter link to a video file"
+            placeholder="Video URL"
           />
 
           <input
             type="number"
             onChange={handleDurationChange}
-            placeholder="Enter video duration in seconds"
+            placeholder="Video duration in seconds"
           />
 
           <div className="video-url-form-button-container">
