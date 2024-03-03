@@ -72,61 +72,29 @@ function trimmerReducer(
     case "trim": {
       const payload = action.payload;
 
-      if (typeof payload === "undefined") return state;
-
-      let newState = state;
-      if (typeof payload.start === "object") {
-        newState = {
-          ...newState,
-          startHandler: { ...newState.startHandler, ...payload.start },
-        };
-      }
-
-      if (typeof payload.end === "object") {
-        newState = {
-          ...newState,
-          endHandler: { ...newState.endHandler, ...payload.end },
-        };
-      }
-
-      return newState;
+      return {
+        ...state,
+        startHandler: { ...state.startHandler, ...payload.start },
+        endHandler: { ...state.endHandler, ...payload.end },
+      };
     }
 
     case "drag": {
       const payload = action.payload;
 
-      if (typeof payload === "undefined") return state;
-
-      let newState = state;
-
-      if (typeof payload.startDragging === "boolean") {
-        newState = {
-          ...newState,
-          startHandler: {
-            ...newState.startHandler,
-            isDragging: payload.startDragging,
-          },
-        };
-      }
-
-      if (typeof payload.endDragging === "boolean") {
-        newState = {
-          ...newState,
-          endHandler: {
-            ...newState.endHandler,
-            isDragging: payload.endDragging,
-          },
-        };
-      }
-
-      newState = {
-        ...newState,
+      return {
+        startHandler: {
+          ...state.startHandler,
+          isDragging: payload.startDragging,
+        },
+        endHandler: {
+          ...state.endHandler,
+          isDragging: payload.endDragging,
+        },
         trimmerPortion: {
-          isDragging: (payload as DragAction["payload"]).trimmerPortionDragging,
+          isDragging: payload.trimmerPortionDragging,
         },
       };
-
-      return newState;
     }
 
     default:
