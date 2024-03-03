@@ -1,0 +1,28 @@
+.video-url-dialog {
+  border-radius: var(--border-radius);
+  border: 1px solid var(--accent-color);
+}
+
+.video-url-form {
+  display: flex;
+  flex-direction: column;
+  gap: calc(2 * var(--spacing));
+}
+
+.video-url-form input {
+  padding: var(--spacing);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--accent-color);
+}
+
+.video-url-form button {
+  border: none;
+  border-radius: var(--border-radius);
+  padding: var(--spacing) calc(2 * var(--spacing));
+}
+
+.video-url-form-button-container {
+  display: flex;
+  gap: var(--spacing);
+  align-self: flex-end;
+}

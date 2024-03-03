@@ -66,10 +66,9 @@ function VideoPlayer() {
         width="70%"
         id="video-player"
         ref={videoPlayer}
+        src={video.videoUrl}
         onTimeUpdate={handleTimeUpdate}
-      >
-        <source src={video.videoUrl} type="video/mp4" />
-      </video>
+      />
 
       <div className="play-container">
         <button

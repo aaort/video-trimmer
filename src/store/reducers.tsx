@@ -1,18 +1,29 @@
-import { Video } from ".";
+import { IVideo } from ".";
 
-interface VideoAction {
+interface TrimVideoAction {
   type: "trim";
   payload: { start: number; end: number };
 }
 
-function videoReducer(video: Video, action: VideoAction): Video {
-  if (action.type === "trim") {
-    const { start, end } = action.payload;
+interface UpdateUrlVideoAction {
+  type: "update-url";
+  payload: { videoUrl: string; videoDuration: number };
+}
 
-    return { ...video, trimStart: start, trimEnd: end };
+type VideoAction = TrimVideoAction | UpdateUrlVideoAction;
+
+function videoReducer(video: IVideo, action: VideoAction): IVideo {
+  switch (action.type) {
+    case "trim": {
+      const { start, end } = action.payload;
+
+      return { ...video, trimStart: start, trimEnd: end };
+    }
+
+    case "update-url": {
+      return { ...video, ...action.payload };
+    }
   }
-
-  return video;
 }
 
 export type { VideoAction };

@@ -1,29 +1,29 @@
 import { PropsWithChildren, createContext, useReducer } from "react";
 import { VideoAction, videoReducer } from "./reducers";
 
-interface Video {
+interface IVideo {
   trimEnd: number;
   videoUrl: string;
   trimStart: number;
   videoDuration: number;
 }
 
-const initialVideo: Video = {
+const initialVideo: IVideo = {
   trimEnd: 15,
   trimStart: 0,
   videoDuration: 15,
   videoUrl:
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
 };
 
 interface VideoContextType {
-  video: Video;
+  video: IVideo;
   dispatch: React.Dispatch<VideoAction>;
 }
 
 const VideoContext = createContext<VideoContextType>({
-  video: initialVideo,
   dispatch: () => {},
+  video: initialVideo,
 });
 
 interface VideoProviderProps extends PropsWithChildren {}
@@ -40,5 +40,5 @@ function VideoProvider(props: VideoProviderProps) {
 }
 
 export { VideoContext };
-export type { Video, VideoContextType };
+export type { IVideo, VideoContextType };
 export default VideoProvider;
