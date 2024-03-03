@@ -1,5 +1,5 @@
 import { PropsWithChildren, createContext, useReducer } from "react";
-import { VideoAction, videoReducer } from "./reducers";
+import { VideoAction, videoReducer } from "./videoReducer";
 
 interface IVideo {
   trimEnd: number;

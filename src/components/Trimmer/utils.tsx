@@ -1,7 +1,7 @@
 import { TRIMMER_HANDLER_WIDTH } from "@components/TrimmerHandler";
 import { TrimmerAction, TrimmerState } from "@hooks/useTrimmer";
 import { IVideo } from "@store/index";
-import { VideoAction } from "@store/reducers";
+import { VideoAction } from "@store/videoReducer";
 import { getRoundedTimePercentage } from "@utils/getRoundedNumPercentage";
 import { Dispatch, RefObject } from "react";
 
