@@ -44,12 +44,7 @@ function Trimmer() {
     return () => {
       window.removeEventListener("resize", updateDefaultVideoTrim);
     };
-  }, [
-    videoDispatch,
-    trimmerContainer,
-    trimmerDispatch,
-    updateDefaultVideoTrim,
-  ]);
+  }, [updateDefaultVideoTrim]);
 
   const currentDraggedItem = useMemo(
     () => ({
