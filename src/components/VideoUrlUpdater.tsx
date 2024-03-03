@@ -2,6 +2,7 @@ import useVideo from "@hooks/useVideo";
 import { IVideo } from "@store/index";
 import "@styles/video-url-updater.css";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import Edit from "./icons/Edit";
 
 interface FormData extends Pick<IVideo, "videoUrl" | "videoDuration"> {}
 
@@ -32,8 +33,10 @@ function VideoURLUpdater() {
   };
 
   return (
-    <>
-      <button onClick={openDialog}> Update Video Url </button>
+    <div>
+      <button className="icon-button" onClick={openDialog}>
+        <Edit />
+      </button>
 
       <dialog className="video-url-dialog" open={isDialogOpen}>
         <form className="video-url-form" onSubmit={handleSubmit}>
@@ -58,7 +61,7 @@ function VideoURLUpdater() {
           </div>
         </form>
       </dialog>
-    </>
+    </div>
   );
 }
 

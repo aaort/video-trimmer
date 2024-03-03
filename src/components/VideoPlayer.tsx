@@ -1,3 +1,4 @@
+import VideoURLUpdater from "@components/VideoURLUpdater";
 import useVideo from "@hooks/useVideo";
 import "@styles/video-player.css";
 import { getTimeFromSeconds } from "@utils/getTimeFromSeconds";
@@ -62,12 +63,16 @@ function VideoPlayer() {
 
   return (
     <div className="video-player-container">
-      <video
-        id="video-player"
-        ref={videoPlayer}
-        src={video.videoUrl}
-        onTimeUpdate={handleTimeUpdate}
-      />
+      <div className="video-player-wrapper">
+        <video
+          id="video-player"
+          ref={videoPlayer}
+          src={video.videoUrl}
+          onTimeUpdate={handleTimeUpdate}
+        />
+
+        <VideoURLUpdater />
+      </div>
 
       <div className="play-container">
         <button

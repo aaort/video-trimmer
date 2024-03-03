@@ -7,6 +7,12 @@
   justify-content: center;
 }
 
+.video-player-wrapper {
+  display: flex;
+  gap: var(--spacing);
+  justify-content: center;
+}
+
 #video-player {
   box-shadow: var(--shadow);
   border-radius: var(--border-radius);
