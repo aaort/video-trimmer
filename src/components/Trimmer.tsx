@@ -12,15 +12,17 @@ type DivMouseEventHandler = MouseEventHandler<HTMLDivElement>;
 
 function Trimmer() {
   const {
-    trimmerPortion: trimmerPortionRef,
     trimmerContainer,
     trimmerEndHandler,
     trimmerStartHandler,
+    trimmerPortion: trimmerPortionRef,
   } = useTrimmerRefs();
 
   const [video, videoDispatch] = useVideo();
 
   const [trimmer, trimmerDispatch] = useTrimmer();
+
+  const { startHandler, endHandler, trimmerPortion } = trimmer;
 
   useEffect(() => {
     trimmerDispatch({
@@ -36,20 +38,18 @@ function Trimmer() {
 
   const currentDraggedItem = useMemo(
     () => ({
-      endHandler: trimmer.endHandler.isDragging,
-      startHandler: trimmer.startHandler.isDragging,
-      trimmerPortion: trimmer.trimmerPortion.isDragging,
+      endHandler: endHandler.isDragging,
+      startHandler: startHandler.isDragging,
+      trimmerPortion: trimmerPortion.isDragging,
     }),
-    [trimmer]
+    [endHandler.isDragging, startHandler.isDragging, trimmerPortion.isDragging]
   );
-
-  const { startHandler, endHandler, trimmerPortion } = trimmer;
 
   const handleTrimmerHandlerMove: DivMouseEventHandler = (event) => {
     if (!Object.values(currentDraggedItem).some(Boolean)) return;
 
-    let trimEndDragged = trimmer.endHandler.x;
-    let trimStartDragged = trimmer.startHandler.x;
+    let trimEndDragged = endHandler.x;
+    let trimStartDragged = startHandler.x;
 
     const { clientX, movementX } = event;
 
@@ -103,7 +103,7 @@ function Trimmer() {
     );
 
     const selectedTrimEndPercentage = getRoundedTimePercentage(
-      trimmer.endHandler.x,
+      endHandler.x,
       trimContainer.clientWidth || 1
     );
 
