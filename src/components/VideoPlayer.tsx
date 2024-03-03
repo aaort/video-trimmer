@@ -3,6 +3,7 @@ import useVideo from "@hooks/useVideo";
 import "@styles/video-player.css";
 import { getTimeFromSeconds } from "@utils/getTimeFromSeconds";
 import { useEffect, useRef, useState } from "react";
+import Loader from "./icons/Loader";
 import PlayIcon from "./icons/PlayIcon";
 import StopIcon from "./icons/StopIcon";
 
@@ -20,6 +21,7 @@ function VideoPlayer() {
   const [video] = useVideo();
   const videoPlayer = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isPlayDisabled, setIsPlayDisabled] = useState<boolean>(false);
 
   const [playedLeft, setPlayedLeft] = useState({
@@ -28,19 +30,21 @@ function VideoPlayer() {
   });
 
   useEffect(() => {
+    if (isLoading) return;
     if (videoPlayer.current!.currentTime < video.trimEnd) {
       setIsPlayDisabled(false);
     }
-  }, [video]);
+  }, [isLoading, video]);
 
   useEffect(() => {
+    if (isLoading) return;
     setPlayedLeft({
       left: getTimeFromSeconds(video.trimEnd),
       played: getTimeFromSeconds(video.trimStart),
     });
 
     videoPlayer.current!.currentTime = video.trimStart;
-  }, [video, videoPlayer]);
+  }, [isLoading, video, videoPlayer]);
 
   const handleTimeUpdate = () => {
     setPlayedLeft({
@@ -61,14 +65,26 @@ function VideoPlayer() {
     setIsPlaying(!isPlaying);
   };
 
+  console.log(isLoading);
+
   return (
     <div className="video-player-container">
       <div className="video-player-wrapper">
+        {isLoading && (
+          <div id="video-player-loading">
+            <Loader />
+          </div>
+        )}
+
         <video
           id="video-player"
           ref={videoPlayer}
+          hidden={isLoading}
           src={video.videoUrl}
+          data-loading={isLoading}
           onTimeUpdate={handleTimeUpdate}
+          onLoadStart={() => setIsLoading(true)}
+          onLoadedMetadata={() => setIsLoading(false)}
         />
 
         <VideoURLUpdater />
