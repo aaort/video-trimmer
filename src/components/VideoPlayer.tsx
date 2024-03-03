@@ -63,7 +63,6 @@ function VideoPlayer() {
   return (
     <div className="video-player-container">
       <video
-        width="70%"
         id="video-player"
         ref={videoPlayer}
         src={video.videoUrl}
