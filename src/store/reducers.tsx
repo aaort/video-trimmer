@@ -21,7 +21,11 @@ function videoReducer(video: IVideo, action: VideoAction): IVideo {
     }
 
     case "update-url": {
-      return { ...video, ...action.payload };
+      return {
+        ...video,
+        ...action.payload,
+        trimEnd: action.payload.videoDuration,
+      };
     }
   }
 }
