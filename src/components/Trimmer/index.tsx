@@ -5,6 +5,7 @@ import useTrimmerRefs from "@hooks/useTrimmerRefs";
 import useVideo from "@hooks/useVideo";
 import "@styles/trimmer.css";
 import { useCallback, useEffect, useMemo } from "react";
+import useTrimmerOnWindowResize from "./hooks/useTrimmerOnWindowResize";
 import { handleMouseDown, handleMouseMove } from "./utils";
 
 function Trimmer() {
@@ -17,33 +18,9 @@ function Trimmer() {
 
   const [video, videoDispatch] = useVideo();
 
-  const [trimmer, trimmerDispatch] = useTrimmer();
+  const [trimmer, trimmerDispatch] = useTrimmerOnWindowResize();
 
   const { startHandler, endHandler, trimmerPortion } = trimmer;
-
-  const updateDefaultVideoTrim = useCallback(() => {
-    trimmerDispatch({
-      type: "trim",
-      payload: {
-        start: { x: 0 },
-        end: {
-          x: trimmerContainer.current!.clientWidth - TRIMMER_HANDLER_WIDTH,
-        },
-      },
-    });
-  }, [trimmerContainer, trimmerDispatch]);
-
-  useEffect(() => {
-    updateDefaultVideoTrim();
-  }, [updateDefaultVideoTrim]);
-
-  useEffect(() => {
-    window.addEventListener("resize", updateDefaultVideoTrim);
-
-    return () => {
-      window.removeEventListener("resize", updateDefaultVideoTrim);
-    };
-  }, [updateDefaultVideoTrim]);
 
   const currentDraggedItem = useMemo(
     () => ({
