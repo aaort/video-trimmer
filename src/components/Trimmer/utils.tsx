@@ -1,5 +1,8 @@
 import { TRIMMER_HANDLER_WIDTH } from "@components/TrimmerHandler";
-import { TrimmerAction, TrimmerState } from "@hooks/useTrimmer";
+import {
+  TrimmerAction,
+  TrimmerState,
+} from "@components/Trimmer/hooks/useTrimmer";
 import { IVideo } from "@store/index";
 import { VideoAction } from "@store/videoReducer";
 import { getRoundedTimePercentage } from "@utils/getRoundedNumPercentage";

@@ -1,7 +1,6 @@
 import TrimmerHandler, {
   TRIMMER_HANDLER_WIDTH,
 } from "@components/TrimmerHandler";
-import useTrimmer from "@hooks/useTrimmer";
 import useTrimmerRefs from "@hooks/useTrimmerRefs";
 import useVideo from "@hooks/useVideo";
 import "@styles/trimmer.css";
