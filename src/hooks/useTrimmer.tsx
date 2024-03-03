@@ -54,9 +54,12 @@ interface StopAction {
   payload?: undefined;
 }
 
-type Action = DragAction | TrimAction | StopAction;
+type TrimmerAction = DragAction | TrimAction | StopAction;
 
-function trimmerReducer(state: TrimmerState, action: Action): TrimmerState {
+function trimmerReducer(
+  state: TrimmerState,
+  action: TrimmerAction
+): TrimmerState {
   switch (action.type) {
     case "stop": {
       return {
@@ -135,4 +138,5 @@ function useTrimmer() {
   return useReducer(trimmerReducer, defaultTrimmerState);
 }
 
+export type { TrimmerState, TrimmerAction };
 export default useTrimmer;
