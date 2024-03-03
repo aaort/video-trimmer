@@ -22,7 +22,7 @@ function Trimmer() {
 
   const { startHandler, endHandler, trimmerPortion } = trimmer;
 
-  useEffect(() => {
+  const updateDefaultVideoTrim = useCallback(() => {
     trimmerDispatch({
       type: "trim",
       payload: {
@@ -32,7 +32,24 @@ function Trimmer() {
         },
       },
     });
-  }, [videoDispatch, trimmerContainer, trimmerDispatch]);
+  }, [trimmerContainer, trimmerDispatch]);
+
+  useEffect(() => {
+    updateDefaultVideoTrim();
+  }, [updateDefaultVideoTrim]);
+
+  useEffect(() => {
+    window.addEventListener("resize", updateDefaultVideoTrim);
+
+    return () => {
+      window.removeEventListener("resize", updateDefaultVideoTrim);
+    };
+  }, [
+    videoDispatch,
+    trimmerContainer,
+    trimmerDispatch,
+    updateDefaultVideoTrim,
+  ]);
 
   const currentDraggedItem = useMemo(
     () => ({
