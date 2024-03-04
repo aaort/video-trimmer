@@ -2,7 +2,6 @@ import useVideo from "@hooks/useVideo";
 import "@styles/video-player.css";
 import { getTimeFromSeconds } from "@utils/getTimeFromSeconds";
 import { useEffect, useRef, useState } from "react";
-import VideoURLUpdater from "./VideoURLUpdater";
 import Loader from "./icons/Loader";
 import PlayIcon from "./icons/PlayIcon";
 import StopIcon from "./icons/StopIcon";
@@ -84,8 +83,6 @@ function VideoPlayer() {
           onLoadStart={() => setIsLoading(true)}
           onLoadedMetadata={() => setIsLoading(false)}
         />
-
-        <VideoURLUpdater />
       </div>
 
       <div className="play-container">

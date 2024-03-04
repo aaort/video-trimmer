@@ -1,4 +1,12 @@
+.video-url-updater {
+  position: absolute;
+  top: calc(2 * var(--spacing));
+  right: calc(2 * var(--spacing));
+}
+
 .video-url-dialog {
+  top: 20%;
+  position: absolute;
   border-radius: var(--border-radius);
   border: 1px solid var(--accent-color);
 }

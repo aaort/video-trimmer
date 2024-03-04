@@ -2,6 +2,7 @@ import useVideo from "@hooks/useVideo";
 import { IVideo } from "@store/index";
 import "@styles/video-url-updater.css";
 import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import { createPortal } from "react-dom";
 import Edit from "./icons/Edit";
 
 interface FormData extends Pick<IVideo, "videoUrl" | "videoDuration"> {}
@@ -33,35 +34,40 @@ function VideoURLUpdater() {
   };
 
   return (
-    <div>
-      <button className="icon-button" onClick={openDialog}>
-        <Edit />
-      </button>
+    <>
+      <div className="video-url-updater">
+        <button className="icon-button" onClick={openDialog}>
+          <Edit />
+        </button>
+      </div>
 
-      <dialog className="video-url-dialog" open={isDialogOpen}>
-        <form className="video-url-form" onSubmit={handleSubmit}>
-          <input
-            type="text"
-            onChange={handleUrlChange}
-            placeholder="Video URL"
-          />
+      {createPortal(
+        <dialog className="video-url-dialog" open={isDialogOpen}>
+          <form className="video-url-form" onSubmit={handleSubmit}>
+            <input
+              type="text"
+              onChange={handleUrlChange}
+              placeholder="Video URL"
+            />
 
-          <input
-            type="number"
-            onChange={handleDurationChange}
-            placeholder="Video duration in seconds"
-          />
+            <input
+              type="number"
+              onChange={handleDurationChange}
+              placeholder="Video duration in seconds"
+            />
 
-          <div className="video-url-form-button-container">
-            <button type="button" onClick={closeDialog}>
-              Close
-            </button>
+            <div className="video-url-form-button-container">
+              <button type="button" onClick={closeDialog}>
+                Close
+              </button>
 
-            <button type="submit"> Set</button>
-          </div>
-        </form>
-      </dialog>
-    </div>
+              <button type="submit"> Set</button>
+            </div>
+          </form>
+        </dialog>,
+        document.body
+      )}
+    </>
   );
 }
 
