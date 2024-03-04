@@ -11,6 +11,7 @@
 
 #trimmer-portion {
   height: 100%;
+  cursor: pointer;
   position: absolute;
   border-radius: var(--border-radius);
   background-color: var(--secondary-color);
