@@ -89,7 +89,6 @@ function VideoPlayer() {
   const handleReplay = () => {
     setIsPlayDisabled(false);
     videoPlayer.current!.currentTime = video.trimStart;
-    videoPlayer.current!.play();
   };
 
   const handlePlayStopClick = () => {
