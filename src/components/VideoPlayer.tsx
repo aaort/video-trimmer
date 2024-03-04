@@ -4,6 +4,7 @@ import { getTimeFromSeconds } from "@utils/getTimeFromSeconds";
 import { useEffect, useRef, useState } from "react";
 import Loader from "./icons/Loader";
 import PlayIcon from "./icons/PlayIcon";
+import Replay from "./icons/Replay";
 import StopIcon from "./icons/StopIcon";
 
 interface IPlayedLeft {
@@ -22,6 +23,7 @@ function VideoPlayer() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isPlayDisabled, setIsPlayDisabled] = useState<boolean>(false);
+  const [isReplayDisabled, setIsReplayDisabled] = useState<boolean>(false);
 
   const [playedLeft, setPlayedLeft] = useState({
     ...defaultPlayedLeft,
@@ -56,6 +58,18 @@ function VideoPlayer() {
       setIsPlayDisabled(true);
       videoPlayer.current!.pause();
     }
+
+    if (videoPlayer.current!.currentTime > video.trimStart) {
+      setIsReplayDisabled(false);
+    } else {
+      setIsReplayDisabled(true);
+    }
+  };
+
+  const handleReplay = () => {
+    setIsPlayDisabled(false);
+    videoPlayer.current!.currentTime = video.trimStart;
+    videoPlayer.current!.play();
   };
 
   const handlePlayStopClick = () => {
@@ -85,11 +99,19 @@ function VideoPlayer() {
         />
       </div>
 
-      <div className="play-container">
+      <div className="player-actions">
         <button
-          className="play-button"
+          onClick={handleReplay}
+          disabled={isReplayDisabled}
+          className="player-action-button"
+        >
+          <Replay />
+        </button>
+
+        <button
           disabled={isPlayDisabled}
           onClick={handlePlayStopClick}
+          className="player-action-button"
         >
           {isPlaying ? <StopIcon /> : <PlayIcon />}
         </button>

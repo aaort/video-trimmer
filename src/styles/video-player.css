@@ -43,7 +43,7 @@
   }
 }
 
-.play-container {
+.player-actions {
   display: flex;
   align-items: center;
   gap: var(--spacing-5);
@@ -53,14 +53,13 @@
   background-color: var(--card-bg-color);
 }
 
-.play-button {
+.player-action-button {
   padding: 0;
-  border: none;
   cursor: pointer;
   background-color: transparent;
 }
 
-.play-button:disabled svg {
+.player-action-button:disabled svg {
   fill: var(--bg-color);
   stroke: var(--secondary-color);
 }
