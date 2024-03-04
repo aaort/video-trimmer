@@ -8,10 +8,10 @@ import Edit from "./icons/Edit";
 interface FormData extends Pick<IVideo, "videoUrl" | "videoDuration"> {}
 
 function VideoURLUpdater() {
-  const [, dispatch] = useVideo();
+  const [video, dispatch] = useVideo();
   const [formData, setFormData] = useState<FormData>({
-    videoUrl: "",
-    videoDuration: 0,
+    videoUrl: video.videoUrl,
+    videoDuration: video.videoDuration,
   });
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
@@ -46,13 +46,15 @@ function VideoURLUpdater() {
           <form className="video-url-form" onSubmit={handleSubmit}>
             <input
               type="text"
-              onChange={handleUrlChange}
               placeholder="Video URL"
+              value={formData.videoUrl}
+              onChange={handleUrlChange}
             />
 
             <input
               type="number"
               onChange={handleDurationChange}
+              value={formData.videoDuration}
               placeholder="Video duration in seconds"
             />
 
