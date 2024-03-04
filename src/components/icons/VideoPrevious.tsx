@@ -1,20 +1,20 @@
-function Replay() {
+function VideoPrevious() {
   return (
     <svg
       width="24"
       height="24"
       strokeWidth="2"
-      fill="transparent"
       viewBox="0 0 24 24"
       strokeLinecap="round"
       strokeLinejoin="round"
+      fill="var(--primary-color)"
       stroke="var(--primary-color)"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="M9 14 4 9l5-5" />
-      <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5H11" />
+      <polygon points="19 20 9 12 19 4 19 20" />
+      <line x1="5" x2="5" y1="19" y2="5" />
     </svg>
   );
 }
 
-export default Replay;
+export default VideoPrevious;

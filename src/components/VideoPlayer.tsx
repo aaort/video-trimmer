@@ -4,7 +4,7 @@ import { getTimeFromSeconds } from "@utils/getTimeFromSeconds";
 import { useEffect, useRef, useState } from "react";
 import Loader from "./icons/Loader";
 import PlayIcon from "./icons/PlayIcon";
-import Replay from "./icons/Replay";
+import VideoPrevious from "./icons/VideoPrevious";
 import StopIcon from "./icons/StopIcon";
 
 interface IPlayedLeft {
@@ -105,7 +105,7 @@ function VideoPlayer() {
           disabled={isReplayDisabled}
           className="player-action-button"
         >
-          <Replay />
+          <VideoPrevious />
         </button>
 
         <button
