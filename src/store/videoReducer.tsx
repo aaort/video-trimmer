@@ -5,12 +5,19 @@ interface TrimVideoAction {
   payload: { start: number; end: number };
 }
 
-interface UpdateUrlVideoAction {
+interface UpdateURLVideoAction {
   type: "update-url";
-  payload: { videoUrl: string; videoDuration: number };
+  payload: string;
+}
+interface SetDurationVideoAction {
+  payload: number;
+  type: "set-duration";
 }
 
-type VideoAction = TrimVideoAction | UpdateUrlVideoAction;
+type VideoAction =
+  | TrimVideoAction
+  | UpdateURLVideoAction
+  | SetDurationVideoAction;
 
 function videoReducer(video: IVideo, action: VideoAction): IVideo {
   switch (action.type) {
@@ -23,8 +30,15 @@ function videoReducer(video: IVideo, action: VideoAction): IVideo {
     case "update-url": {
       return {
         ...video,
-        ...action.payload,
-        trimEnd: action.payload.videoDuration,
+        videoUrl: action.payload,
+      };
+    }
+
+    case "set-duration": {
+      return {
+        ...video,
+        trimEnd: action.payload,
+        videoDuration: action.payload,
       };
     }
   }

@@ -1,19 +1,29 @@
 import useVideo from "@hooks/useVideo";
 import { IVideo } from "@store/index";
 import "@styles/video-url-updater.css";
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { createPortal } from "react-dom";
 import Edit from "./icons/Edit";
 
-interface FormData extends Pick<IVideo, "videoUrl" | "videoDuration"> {}
+interface FormData extends Pick<IVideo, "videoUrl"> {}
 
 function VideoURLUpdater() {
   const [video, dispatch] = useVideo();
   const [formData, setFormData] = useState<FormData>({
     videoUrl: video.videoUrl,
-    videoDuration: video.videoDuration,
   });
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const videoUrlInput = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isDialogOpen) videoUrlInput.current?.select();
+  }, [isDialogOpen]);
 
   const openDialog = () => setIsDialogOpen(true);
   const closeDialog = () => setIsDialogOpen(false);
@@ -21,16 +31,10 @@ function VideoURLUpdater() {
   const handleUrlChange: ChangeEventHandler<HTMLInputElement> = (event) =>
     setFormData({ ...formData, videoUrl: event.target.value });
 
-  const handleDurationChange: ChangeEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    setFormData({ ...formData, videoDuration: Number(event.target.value) });
-  };
-
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     setIsDialogOpen(false);
-    dispatch({ type: "update-url", payload: formData });
+    dispatch({ type: "update-url", payload: formData.videoUrl });
   };
 
   return (
@@ -46,16 +50,10 @@ function VideoURLUpdater() {
           <form className="video-url-form" onSubmit={handleSubmit}>
             <input
               type="text"
+              ref={videoUrlInput}
               placeholder="Video URL"
               value={formData.videoUrl}
               onChange={handleUrlChange}
-            />
-
-            <input
-              type="number"
-              onChange={handleDurationChange}
-              value={formData.videoDuration}
-              placeholder="Video duration in seconds"
             />
 
             <div className="video-url-form-button-container">

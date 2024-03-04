@@ -4,8 +4,8 @@ import { getTimeFromSeconds } from "@utils/getTimeFromSeconds";
 import { useEffect, useRef, useState } from "react";
 import Loader from "./icons/Loader";
 import PlayIcon from "./icons/PlayIcon";
-import VideoPrevious from "./icons/VideoPrevious";
 import StopIcon from "./icons/StopIcon";
+import VideoPrevious from "./icons/VideoPrevious";
 
 interface IPlayedLeft {
   left: string;
@@ -18,7 +18,7 @@ const defaultPlayedLeft: IPlayedLeft = {
 };
 
 function VideoPlayer() {
-  const [video] = useVideo();
+  const [video, videoDispatch] = useVideo();
   const videoPlayer = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -29,6 +29,26 @@ function VideoPlayer() {
     ...defaultPlayedLeft,
     left: getTimeFromSeconds(video.trimEnd),
   });
+
+  useEffect(() => {
+    const videoPlayerCurrent = videoPlayer.current;
+
+    const onVideoURLChange = () => {
+      videoDispatch({
+        type: "set-duration",
+        payload: videoPlayerCurrent!.duration,
+      });
+    };
+
+    videoPlayerCurrent?.addEventListener("durationchange", onVideoURLChange);
+
+    return () => {
+      videoPlayerCurrent?.removeEventListener(
+        "durationchange",
+        onVideoURLChange
+      );
+    };
+  }, [video.videoUrl, videoDispatch]);
 
   useEffect(() => {
     if (isLoading) return;
