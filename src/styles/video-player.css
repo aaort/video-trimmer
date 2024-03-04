@@ -60,11 +60,16 @@
 }
 
 .player-action-button:disabled svg {
+  cursor: auto;
   fill: var(--bg-color);
   stroke: var(--secondary-color);
 }
 
-.play-button svg:hover {
+.player-action-button:hover {
+  box-shadow: none;
+}
+
+.player-action-button:enabled:hover {
   filter: drop-shadow(var(--shadow));
 }
 
