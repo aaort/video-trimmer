@@ -61,7 +61,7 @@ function VideoURLUpdater() {
                 Close
               </button>
 
-              <button type="submit"> Set</button>
+              <button type="submit">Set</button>
             </div>
           </form>
         </dialog>,
