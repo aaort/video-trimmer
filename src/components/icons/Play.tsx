@@ -1,4 +1,4 @@
-function PlayIcon() {
+function Play() {
   return (
     <div>
       <svg
@@ -18,4 +18,4 @@ function PlayIcon() {
   );
 }
 
-export default PlayIcon;
+export default Play;

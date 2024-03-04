@@ -1,4 +1,4 @@
-function StopIcon() {
+function Stop() {
   return (
     <div>
       <svg
@@ -19,4 +19,4 @@ function StopIcon() {
   );
 }
 
-export default StopIcon;
+export default Stop;

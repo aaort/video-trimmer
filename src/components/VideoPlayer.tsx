@@ -3,8 +3,8 @@ import "@styles/video-player.css";
 import { getTimeFromSeconds } from "@utils/getTimeFromSeconds";
 import { useEffect, useRef, useState } from "react";
 import Loader from "./icons/Loader";
-import PlayIcon from "./icons/PlayIcon";
-import StopIcon from "./icons/StopIcon";
+import PlayIcon from "./icons/Play";
+import Stop from "./icons/Stop";
 import VideoPrevious from "./icons/VideoPrevious";
 
 interface IPlayedLeft {
@@ -132,7 +132,7 @@ function VideoPlayer() {
           onClick={handlePlayStopClick}
           className="player-action-button"
         >
-          {isPlaying ? <StopIcon /> : <PlayIcon />}
+          {isPlaying ? <Stop /> : <PlayIcon />}
         </button>
 
         <span>
