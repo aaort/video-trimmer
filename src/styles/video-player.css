@@ -1,10 +1,10 @@
 .video-player-container {
-  gap: 2rem;
   display: flex;
   user-select: none;
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  gap: calc(4 * var(--spacing));
 }
 
 .video-player-wrapper {
@@ -44,13 +44,13 @@
 }
 
 .play-container {
-  gap: 1rem;
   display: flex;
   align-items: center;
+  gap: calc(2 * var(--spacing));
   padding-block: var(--spacing);
   border-radius: var(--border-radius);
   background-color: var(--card-bg-color);
-  padding-inline: calc(var(--spacing) * 2);
+  padding-inline: calc(2 * var(--spacing));
 }
 
 .play-button {
@@ -71,7 +71,7 @@
 
 @media screen and (max-width: 768px) {
   #video-player {
-    width: 100%; /* 100% width on screens smaller than 768px */
+    width: 100%;
   }
   #video-player-loading {
     width: 200px;
@@ -81,7 +81,7 @@
 
 @media screen and (min-width: 768px) and (max-width: 992px) {
   #video-player {
-    width: 70%; /* 70% width on screens between 768px and 992px */
+    width: 70%;
   }
   #video-player-loading {
     width: 400px;
@@ -91,7 +91,7 @@
 
 @media screen and (min-width: 992px) {
   #video-player {
-    width: 60%; /* 60% width on screens larger than 992px */
+    width: 60%;
   }
   #video-player-loading {
     width: 700px;

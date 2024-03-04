@@ -1,9 +1,10 @@
 #root {
-  padding: 2rem;
+  padding-top: calc(4 * var(--spacing));
+  padding-inline: calc(2 * var(--spacing));
 }
 
 .app {
-  gap: 40px;
+  gap: calc(4 * var(--spacing));
   height: 100%;
   display: flex;
   align-items: center;
