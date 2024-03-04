@@ -1,7 +1,7 @@
 .video-url-updater {
   position: absolute;
-  top: calc(2 * var(--spacing));
-  right: calc(2 * var(--spacing));
+  top: var(--spacing-5);
+  right: var(--spacing-5);
 }
 
 .video-url-dialog {
@@ -13,8 +13,8 @@
 
 .video-url-form {
   display: flex;
+  gap: var(--spacing-5);
   flex-direction: column;
-  gap: calc(2 * var(--spacing));
 }
 
 .video-url-form input {
@@ -26,7 +26,7 @@
 .video-url-form button {
   border: none;
   border-radius: var(--border-radius);
-  padding: var(--spacing) calc(2 * var(--spacing));
+  padding: var(--spacing) var(--spacing-5);
 }
 
 .video-url-form-button-container {

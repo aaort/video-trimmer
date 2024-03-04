@@ -4,7 +4,7 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  gap: calc(4 * var(--spacing));
+  gap: var(--spacing-9);
 }
 
 .video-player-wrapper {
@@ -46,11 +46,11 @@
 .play-container {
   display: flex;
   align-items: center;
-  gap: calc(2 * var(--spacing));
+  gap: var(--spacing-5);
   padding-block: var(--spacing);
+  padding-inline: var(--spacing-5);
   border-radius: var(--border-radius);
   background-color: var(--card-bg-color);
-  padding-inline: calc(2 * var(--spacing));
 }
 
 .play-button {

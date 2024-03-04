@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: space-between;
   background: var(--card-bg-color);
-  padding-inline: calc(var(--spacing) * 2);
+  padding-inline: var(--spacing-5);
   border-top-left-radius: var(--border-radius);
   border-top-right-radius: var(--border-radius);
 }

@@ -13,6 +13,14 @@
   --border-radius: 0.5rem;
 
   --spacing: 0.5rem;
+  --spacing-2: 0.75rem;
+  --spacing-3: 1rem;
+  --spacing-4: 1.5rem;
+  --spacing-5: 2rem;
+  --spacing-6: 2.5rem;
+  --spacing-7: 3rem;
+  --spacing-8: 3.5rem;
+  --spacing-9: 4rem;
 
   --bg-color: #18181b;
   --info-color: #22c55e;
@@ -48,7 +56,7 @@ button {
   text-transform: uppercase;
   border-radius: var(--border-radius);
   background-color: var(--secondary-color);
-  padding: calc(2 * var(--spacing)) calc(4 * var(--spacing));
+  padding: var(--spacing-5) var(--spacing-9);
 }
 
 button:hover {
