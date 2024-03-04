@@ -1,5 +1,4 @@
 import useVideo from "@hooks/useVideo";
-import { IVideo } from "@store/index";
 import "@styles/video-url-updater.css";
 import {
   ChangeEventHandler,
@@ -11,15 +10,11 @@ import {
 import { createPortal } from "react-dom";
 import Edit from "./icons/Edit";
 
-interface FormData extends Pick<IVideo, "videoUrl"> {}
-
 function VideoURLUpdater() {
   const [video, dispatch] = useVideo();
-  const [formData, setFormData] = useState<FormData>({
-    videoUrl: video.videoUrl,
-  });
-  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const videoUrlInput = useRef<HTMLInputElement>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [videoUrl, setVideoUrl] = useState<string>(video.videoUrl);
 
   useEffect(() => {
     if (isDialogOpen) videoUrlInput.current?.select();
@@ -29,12 +24,12 @@ function VideoURLUpdater() {
   const closeDialog = () => setIsDialogOpen(false);
 
   const handleUrlChange: ChangeEventHandler<HTMLInputElement> = (event) =>
-    setFormData({ ...formData, videoUrl: event.target.value });
+    setVideoUrl(event.target.value);
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     setIsDialogOpen(false);
-    dispatch({ type: "update-url", payload: formData.videoUrl });
+    dispatch({ type: "update-url", payload: videoUrl });
   };
 
   return (
@@ -50,9 +45,9 @@ function VideoURLUpdater() {
           <form className="video-url-form" onSubmit={handleSubmit}>
             <input
               type="text"
+              value={videoUrl}
               ref={videoUrlInput}
               placeholder="Video URL"
-              value={formData.videoUrl}
               onChange={handleUrlChange}
             />
 
