@@ -65,8 +65,6 @@ function VideoPlayer() {
     setIsPlaying(!isPlaying);
   };
 
-  console.log(isLoading);
-
   return (
     <div className="video-player-container">
       <div className="video-player-wrapper">
