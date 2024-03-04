@@ -1,7 +1,7 @@
 import TrimmerHandler, {
   TRIMMER_HANDLER_WIDTH,
 } from "@components/TrimmerHandler";
-import useTrimmerRefs from "@hooks/useTrimmerRefs";
+import useTrimmerRefs from "@components/Trimmer/hooks/useTrimmerRefs";
 import useVideo from "@hooks/useVideo";
 import "@styles/trimmer.css";
 import { useCallback, useEffect, useMemo } from "react";
