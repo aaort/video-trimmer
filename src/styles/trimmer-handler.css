@@ -1,10 +1,14 @@
 .trimmer-handler {
   z-index: 20;
   height: 100%;
+  cursor: move;
   position: absolute;
-  box-shadow: var(--shadow);
   border-radius: var(--border-radius);
   background-color: var(--accent-color);
+}
+
+.trimmer-handler:hover {
+  box-shadow: var(--shadow);
 }
 
 .trimmer-handler[data-dragging="true"] {
