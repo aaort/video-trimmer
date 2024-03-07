@@ -14,11 +14,3 @@
 .trimmer-handler[data-dragging="true"] {
   background-color: var(--primary-color);
 }
-
-#trimmer-start-handler {
-  left: 0;
-}
-
-#trimmer-end-handler {
-  left: 0;
-}
