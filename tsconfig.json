@@ -23,9 +23,7 @@
     "baseUrl": "./",
     "paths": {
       "@store/*": ["src/store/*"],
-      "@assets/*": ["src/assets/*"],
       "@styles/*": ["src/styles/*"],
-      "@constants/*": ["src/constants/*"],
       "@components/*": ["src/components/*"],
       "@icons/*": ["src/components/icons/*"]
     }
