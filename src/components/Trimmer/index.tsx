@@ -1,12 +1,16 @@
-import TrimmerHandler, {
-  TRIMMER_HANDLER_WIDTH,
-} from "@components/TrimmerHandler";
 import useTrimmerRefs from "@components/Trimmer/hooks/useTrimmerRefs";
+import TrimmerHandler from "@components/TrimmerHandler";
 import useVideo from "@hooks/useVideo";
 import "@styles/trimmer.css";
 import { useCallback, useEffect, useMemo } from "react";
 import useTrimmerOnWindowResize from "./hooks/useTrimmerOnWindowResize";
-import { handleMouseDown, handleMouseMove } from "./utils";
+import {
+  handleEndHandlerMove,
+  handleMouseDown,
+  handleStartHandlerMove,
+  handleTrimmerPortionMove,
+  updateVideoProps,
+} from "./utils";
 
 function Trimmer() {
   const {
@@ -42,17 +46,18 @@ function Trimmer() {
   );
 
   useEffect(() => {
-    const trimmerMouseMoveListener = (event: MouseEvent) =>
-      handleMouseMove({
-        event,
-        video,
-        trimmer,
-        videoDispatch,
-        trimmerPortion,
-        trimmerDispatch,
-        trimmerContainer,
-        currentDraggedItem,
-      });
+    const trimmerMouseMoveListener = (event: MouseEvent) => {
+      if (currentDraggedItem.endHandler) {
+        handleEndHandlerMove(event);
+        updateVideoProps(video, videoDispatch);
+      } else if (currentDraggedItem.startHandler) {
+        handleStartHandlerMove(event);
+        updateVideoProps(video, videoDispatch);
+      } else if (currentDraggedItem.trimmerPortion) {
+        handleTrimmerPortionMove(event);
+        updateVideoProps(video, videoDispatch);
+      }
+    };
 
     document.addEventListener("mouseup", handleStopDragging);
     document.addEventListener("mousedown", trimmerMouseDownListener);
@@ -64,19 +69,12 @@ function Trimmer() {
       document.removeEventListener("mousemove", trimmerMouseMoveListener);
     };
   }, [
-    video,
-    trimmer,
-    videoDispatch,
-    trimmerPortion,
-    trimmerDispatch,
-    trimmerContainer,
-    handleStopDragging,
     currentDraggedItem,
+    handleStopDragging,
     trimmerMouseDownListener,
+    video,
+    videoDispatch,
   ]);
-
-  const trimmerPortionWidth =
-    endHandler.x - startHandler.x + TRIMMER_HANDLER_WIDTH;
 
   return (
     <div
@@ -91,14 +89,7 @@ function Trimmer() {
         data-dragging={startHandler.isDragging}
       />
 
-      <div
-        id="trimmer-portion"
-        ref={trimmerPortionRef}
-        style={{
-          left: startHandler.x,
-          width: trimmerPortionWidth,
-        }}
-      />
+      <div id="trimmer-portion" ref={trimmerPortionRef} />
 
       <TrimmerHandler
         forSide="end"

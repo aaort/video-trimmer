@@ -1,12 +1,12 @@
-import { TRIMMER_HANDLER_WIDTH } from "@components/TrimmerHandler";
 import {
   TrimmerAction,
   TrimmerState,
 } from "@components/Trimmer/hooks/useTrimmer";
+import { TRIMMER_HANDLER_WIDTH } from "@components/TrimmerHandler";
 import { IVideo } from "@store/index";
 import { VideoAction } from "@store/videoReducer";
 import { getRoundedTimePercentage } from "@utils/getRoundedNumPercentage";
-import { Dispatch, RefObject } from "react";
+import { Dispatch } from "react";
 
 interface HandleMouseDownProps {
   event: MouseEvent;
@@ -68,87 +68,91 @@ const handleMouseDown = (props: HandleMouseDownProps) => {
   });
 };
 
-interface HandleMouseMoveProps extends HandleMouseDownProps {
-  video: IVideo;
-  videoDispatch: Dispatch<VideoAction>;
-  trimmerContainer: RefObject<HTMLDivElement>;
-  currentDraggedItem: Record<string, boolean>;
-  trimmerPortion: TrimmerState["trimmerPortion"];
-}
+const handleEndHandlerMove = (event: MouseEvent) => {
+  const target = document.getElementById("trimmer-end-handler");
+  if (!target) return;
 
-const handleMouseMove = (props: HandleMouseMoveProps) => {
-  const {
-    event,
-    video,
-    trimmer,
-    videoDispatch,
-    trimmerPortion,
-    trimmerDispatch,
-    trimmerContainer,
-    currentDraggedItem,
-  } = props;
+  const parent = target.parentElement;
 
-  const { startHandler, endHandler } = trimmer;
+  if (!parent) return;
 
-  if (!Object.values(currentDraggedItem).some(Boolean)) return;
+  const calculatedX = event.clientX - target.offsetWidth * 2;
+  const calculatedMaxX = parent.offsetWidth - target.offsetWidth;
 
-  let trimEndDragged = endHandler.x;
-  let trimStartDragged = startHandler.x;
+  target.style.left = `${Math.min(calculatedMaxX, calculatedX)}px`;
 
-  const { clientX, movementX } = event;
+  setTrimmerPortionProps();
+};
 
-  if (currentDraggedItem.trimmerPortion) {
-    trimEndDragged = endHandler.x + movementX;
-    trimStartDragged = startHandler.x + movementX;
-  } else if (currentDraggedItem.startHandler) {
-    trimStartDragged = clientX - startHandler.initialX;
-  } else if (currentDraggedItem.endHandler) {
-    trimEndDragged = clientX - endHandler.initialX;
-  }
+const handleStartHandlerMove = (event: MouseEvent) => {
+  const target = document.getElementById("trimmer-start-handler");
+  if (!target) return;
 
-  if (trimEndDragged - trimStartDragged <= TRIMMER_HANDLER_WIDTH) {
-    return;
-  }
+  const parent = target.parentElement;
 
-  const trimContainer = trimmerContainer.current!;
+  if (!parent) return;
 
-  const reachedStart = trimStartDragged <= trimContainer.clientLeft;
-  const reachedEnd =
-    trimEndDragged >=
-    trimContainer.clientLeft +
-      trimContainer.clientWidth -
-      TRIMMER_HANDLER_WIDTH;
+  const calculatedX = event.clientX - target.offsetWidth * 2;
 
-  if (trimmerPortion.isDragging && (reachedStart || reachedEnd)) {
-    return;
-  }
+  target.style.left = `${Math.max(0, calculatedX)}px`;
 
-  if (startHandler.isDragging && reachedStart) {
-    return;
-  }
+  setTrimmerPortionProps();
+};
 
-  if (endHandler.isDragging && reachedEnd) return;
+const handleTrimmerPortionMove = (event: MouseEvent) => {
+  const target = document.getElementById("trimmer-portion");
+  const startHandler = document.getElementById("trimmer-start-handler");
+  const endHandler = document.getElementById("trimmer-end-handler");
+  const parent = target?.parentElement;
 
-  trimmerDispatch({
-    type: "trim",
-    payload: {
-      end: {
-        x: trimEndDragged,
-      },
-      start: {
-        x: trimStartDragged,
-      },
-    },
-  });
+  if (!endHandler || !target || !startHandler || !parent) return;
+
+  const startHandlerX = startHandler.offsetLeft + event.movementX;
+  const endHandlerX = endHandler.offsetLeft + event.movementX;
+  const endHandlerMaxX = parent.offsetWidth - endHandler.offsetWidth;
+
+  const shouldStopMovement =
+    endHandlerX >= endHandlerMaxX || startHandlerX <= 0;
+
+  if (shouldStopMovement) return;
+
+  endHandler.style.left = `${Math.min(endHandlerMaxX, endHandlerX)}px`;
+  startHandler.style.left = `${Math.max(0, startHandlerX)}px`;
+
+  setTrimmerPortionProps();
+};
+
+const setTrimmerPortionProps = () => {
+  const endHandler = document.getElementById("trimmer-end-handler");
+  const startHandler = document.getElementById("trimmer-start-handler");
+  const trimmerPortion = document.getElementById("trimmer-portion");
+
+  if (!endHandler || !trimmerPortion || !startHandler) return;
+
+  trimmerPortion.style.left = `${startHandler.offsetLeft}px`;
+  trimmerPortion.style.width = `${
+    endHandler.offsetLeft - startHandler.offsetLeft + startHandler.offsetWidth
+  }px`;
+};
+
+const updateVideoProps = (
+  video: IVideo,
+  videoDispatch: Dispatch<VideoAction>
+) => {
+  const parent = document.getElementById("trimmer-container");
+  const startHandler = document.getElementById("trimmer-start-handler");
+  const endHandler = document.getElementById("trimmer-end-handler");
+
+  if (!parent || !startHandler || !endHandler) return;
 
   const selectedTrimStartPercentage = getRoundedTimePercentage(
-    startHandler.x,
-    trimContainer.clientWidth || 1
+    startHandler.offsetLeft,
+    parent.clientWidth || 1
   );
 
   const selectedTrimEndPercentage = getRoundedTimePercentage(
-    endHandler.x,
-    trimContainer.clientWidth || 1
+    endHandler.offsetLeft,
+    parent.clientWidth || 1
   );
 
   const selectedTrimEndTime =
@@ -165,4 +169,10 @@ const handleMouseMove = (props: HandleMouseMoveProps) => {
   });
 };
 
-export { handleMouseDown, handleMouseMove };
+export {
+  handleEndHandlerMove,
+  handleMouseDown,
+  handleStartHandlerMove,
+  handleTrimmerPortionMove,
+  updateVideoProps,
+};
