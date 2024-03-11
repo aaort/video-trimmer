@@ -1,4 +1,10 @@
-import { getTrimmerElements, setTrimmerPortionProps } from "./utils";
+import { VideoAction } from "@store/videoReducer";
+import { Dispatch } from "react";
+import {
+  getTrimmerElements,
+  setTrimmerPortionProps,
+  setVideoProps,
+} from "./utils";
 
 const handleMouseDown = (event: MouseEvent) => {
   const target = event.target as HTMLDivElement;
@@ -14,7 +20,10 @@ const handleMouseUp = () => {
   });
 };
 
-const handleMouseMove = (event: MouseEvent) => {
+const handleMouseMove = (
+  event: MouseEvent,
+  videoDispatch: Dispatch<VideoAction>
+) => {
   const { startHandler, endHandler, portion } = getTrimmerElements();
 
   const target = [startHandler, endHandler, portion].find(
@@ -26,6 +35,8 @@ const handleMouseMove = (event: MouseEvent) => {
   const targetId = target.id as keyof typeof MOUSE_MOVE_LISTENERS;
 
   MOUSE_MOVE_LISTENERS[targetId](event);
+
+  setVideoProps(videoDispatch);
 };
 
 const handleEndHandlerMove = (event: MouseEvent) => {

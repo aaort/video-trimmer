@@ -7,14 +7,18 @@ function Trimmer() {
   const [video, videoDispatch] = useVideo();
 
   useEffect(() => {
+    const handleVideoUpdateOnMouseMove = (event: MouseEvent) => {
+      handleMouseMove(event, videoDispatch);
+    };
+
     document.addEventListener("mouseup", handleMouseUp);
     document.addEventListener("mousedown", handleMouseDown);
-    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mousemove", handleVideoUpdateOnMouseMove);
 
     return () => {
       document.removeEventListener("mousemove", handleMouseUp);
       document.removeEventListener("mousedown", handleMouseDown);
-      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mousemove", handleVideoUpdateOnMouseMove);
     };
   }, [video, videoDispatch]);
 
