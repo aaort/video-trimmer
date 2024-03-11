@@ -1,102 +1,30 @@
-import useTrimmerRefs from "@components/Trimmer/hooks/useTrimmerRefs";
-import TrimmerHandler from "@components/TrimmerHandler";
 import useVideo from "@hooks/useVideo";
 import "@styles/trimmer.css";
-import { useCallback, useEffect, useMemo } from "react";
-import useTrimmerOnWindowResize from "./hooks/useTrimmerOnWindowResize";
-import {
-  handleEndHandlerMove,
-  handleMouseDown,
-  handleStartHandlerMove,
-  handleTrimmerPortionMove,
-  updateVideoProps,
-} from "./utils";
+import { useEffect } from "react";
+import { handleMouseDown, handleMouseMove, handleMouseUp } from "./utils";
 
 function Trimmer() {
-  const {
-    trimmerContainer,
-    trimmerEndHandler,
-    trimmerStartHandler,
-    trimmerPortion: trimmerPortionRef,
-  } = useTrimmerRefs();
-
   const [video, videoDispatch] = useVideo();
 
-  const [trimmer, trimmerDispatch] = useTrimmerOnWindowResize();
-
-  const { startHandler, endHandler, trimmerPortion } = trimmer;
-
-  const currentDraggedItem = useMemo(
-    () => ({
-      endHandler: endHandler.isDragging,
-      startHandler: startHandler.isDragging,
-      trimmerPortion: trimmerPortion.isDragging,
-    }),
-    [endHandler.isDragging, startHandler.isDragging, trimmerPortion.isDragging]
-  );
-
-  const handleStopDragging = useCallback(
-    () => trimmerDispatch({ type: "stop" }),
-    [trimmerDispatch]
-  );
-
-  const trimmerMouseDownListener = useCallback(
-    (event: MouseEvent) => handleMouseDown({ event, trimmer, trimmerDispatch }),
-    [trimmer, trimmerDispatch]
-  );
-
   useEffect(() => {
-    const trimmerMouseMoveListener = (event: MouseEvent) => {
-      if (currentDraggedItem.endHandler) {
-        handleEndHandlerMove(event);
-        updateVideoProps(video, videoDispatch);
-      } else if (currentDraggedItem.startHandler) {
-        handleStartHandlerMove(event);
-        updateVideoProps(video, videoDispatch);
-      } else if (currentDraggedItem.trimmerPortion) {
-        handleTrimmerPortionMove(event);
-        updateVideoProps(video, videoDispatch);
-      }
-    };
-
-    document.addEventListener("mouseup", handleStopDragging);
-    document.addEventListener("mousedown", trimmerMouseDownListener);
-    document.addEventListener("mousemove", trimmerMouseMoveListener);
+    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mousedown", handleMouseDown);
+    document.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      document.removeEventListener("mousemove", handleStopDragging);
-      document.removeEventListener("mousedown", trimmerMouseDownListener);
-      document.removeEventListener("mousemove", trimmerMouseMoveListener);
+      document.removeEventListener("mousemove", handleMouseUp);
+      document.removeEventListener("mousedown", handleMouseDown);
+      document.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [
-    currentDraggedItem,
-    handleStopDragging,
-    trimmerMouseDownListener,
-    video,
-    videoDispatch,
-  ]);
+  }, [video, videoDispatch]);
 
   return (
-    <div
-      ref={trimmerContainer}
-      id="trimmer-container"
-      onMouseUp={handleStopDragging}
-    >
-      <TrimmerHandler
-        forSide="start"
-        left={startHandler.x}
-        ref={trimmerStartHandler}
-        data-dragging={startHandler.isDragging}
-      />
+    <div id="trimmer-container">
+      <div id="trimmer-start-handler" className="trimmer-handler" />
 
-      <div id="trimmer-portion" ref={trimmerPortionRef} />
+      <div id="trimmer-portion" />
 
-      <TrimmerHandler
-        forSide="end"
-        left={endHandler.x}
-        ref={trimmerEndHandler}
-        data-dragging={endHandler.isDragging}
-      />
+      <div id="trimmer-end-handler" className="trimmer-handler" />
     </div>
   );
 }

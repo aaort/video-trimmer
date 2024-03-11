@@ -3,7 +3,6 @@ import { ComponentProps, ForwardedRef, forwardRef } from "react";
 
 interface HandlerProps extends ComponentProps<"div"> {
   forSide: "start" | "end";
-  left: React.CSSProperties["left"];
 }
 
 const TRIMMER_HANDLER_WIDTH = 20;
@@ -15,19 +14,18 @@ const ids: Record<HandlerProps["forSide"], string> = {
 
 const TrimmerHandler = forwardRef(
   (props: HandlerProps, ref: ForwardedRef<HTMLDivElement>) => {
-    const { forSide, left, ...rest } = props;
+    const { forSide, ...rest } = props;
 
     return (
       <div
         ref={ref}
         id={ids[forSide]}
         className="trimmer-handler"
-        style={{ left, width: TRIMMER_HANDLER_WIDTH }}
+        style={{ width: TRIMMER_HANDLER_WIDTH }}
         {...rest}
       />
     );
   }
 );
 
-export { TRIMMER_HANDLER_WIDTH };
 export default TrimmerHandler;

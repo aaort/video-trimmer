@@ -1,71 +1,34 @@
-import {
-  TrimmerAction,
-  TrimmerState,
-} from "@components/Trimmer/hooks/useTrimmer";
-import { TRIMMER_HANDLER_WIDTH } from "@components/TrimmerHandler";
 import { IVideo } from "@store/index";
 import { VideoAction } from "@store/videoReducer";
 import { getRoundedTimePercentage } from "@utils/getRoundedNumPercentage";
 import { Dispatch } from "react";
 
-interface HandleMouseDownProps {
-  event: MouseEvent;
-  trimmer: TrimmerState;
-  trimmerDispatch: Dispatch<TrimmerAction>;
-}
-
-const handleMouseDown = (props: HandleMouseDownProps) => {
-  const { event, trimmer, trimmerDispatch } = props;
-  const { startHandler, endHandler } = trimmer;
-
+const handleMouseDown = (event: MouseEvent) => {
   const target = event.target as HTMLDivElement;
-  const targetId = target.id;
 
-  const isDraggingTrimmerPortion = targetId === "trimmer-portion";
-  const isDraggingEndHandler = targetId === "trimmer-end-handler";
-  const isDraggingStartHandler = targetId === "trimmer-start-handler";
+  target.setAttribute("data-dragging", "1");
+};
 
-  trimmerDispatch({
-    type: "drag",
-    payload: {
-      endDragging: isDraggingEndHandler,
-      startDragging: isDraggingStartHandler,
-      trimmerPortionDragging: isDraggingTrimmerPortion,
-    },
+const handleMouseUp = () => {
+  const { endHandler, startHandler, portion } = getTrimmerElements();
+
+  [endHandler, portion, startHandler].filter(Boolean).forEach((elem) => {
+    elem!.setAttribute("data-dragging", "0");
   });
+};
 
-  const targetRect = target.getBoundingClientRect();
+const handleMouseMove = (event: MouseEvent) => {
+  const { startHandler, endHandler, portion } = getTrimmerElements();
 
-  let endHandlerInitialX = endHandler.initialX;
-  let startHandlerInitialX = startHandler.initialX;
+  if (!startHandler || !endHandler || !portion) return;
 
-  if (isDraggingStartHandler) {
-    startHandlerInitialX =
-      targetRect.left +
-      targetRect.width -
-      event.clientX +
-      TRIMMER_HANDLER_WIDTH;
+  if (Number(endHandler.getAttribute("data-dragging"))) {
+    handleEndHandlerMove(event);
+  } else if (Number(startHandler.getAttribute("data-dragging"))) {
+    handleStartHandlerMove(event);
+  } else if (Number(portion.getAttribute("data-dragging"))) {
+    handleTrimmerPortionMove(event);
   }
-
-  if (isDraggingEndHandler) {
-    endHandlerInitialX =
-      targetRect.left +
-      targetRect.width -
-      event.clientX +
-      TRIMMER_HANDLER_WIDTH * 2;
-  }
-
-  trimmerDispatch({
-    type: "trim",
-    payload: {
-      end: {
-        initialX: endHandlerInitialX,
-      },
-      start: {
-        initialX: startHandlerInitialX,
-      },
-    },
-  });
 };
 
 const handleEndHandlerMove = (event: MouseEvent) => {
@@ -172,9 +135,12 @@ const getTrimmerElements = () => {
 };
 
 export {
+  getTrimmerElements,
   handleEndHandlerMove,
   handleMouseDown,
   handleStartHandlerMove,
   handleTrimmerPortionMove,
   updateVideoProps,
+  handleMouseUp,
+  handleMouseMove,
 };

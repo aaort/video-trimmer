@@ -17,3 +17,25 @@
   border-radius: var(--border-radius);
   background-color: var(--secondary-color);
 }
+
+.trimmer-handler {
+  z-index: 20;
+  height: 100%;
+  width: 20px;
+  cursor: move;
+  position: absolute;
+  border-radius: var(--border-radius);
+  background-color: var(--accent-color);
+}
+
+.trimmer-handler:hover {
+  box-shadow: var(--shadow);
+}
+
+.trimmer-handler[data-dragging="true"] {
+  background-color: var(--primary-color);
+}
+
+#trimmer-end-handler {
+  left: calc(100% - 20px);
+}
