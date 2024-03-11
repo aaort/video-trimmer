@@ -1,12 +1,14 @@
 import { VideoAction } from "@store/videoReducer";
 import { Dispatch } from "react";
 
+const HANDLER_WIDTH = 20;
+
 const setTrimmerPortionProps = () => {
   const { portion, startHandler, endHandler } = getTrimmerElements();
 
   portion.style.left = `${startHandler.offsetLeft}px`;
   portion.style.width = `${
-    endHandler.offsetLeft - startHandler.offsetLeft + startHandler.offsetWidth
+    endHandler.offsetLeft - startHandler.offsetLeft + HANDLER_WIDTH
   }px`;
 };
 
@@ -45,7 +47,7 @@ const setVideoProps = (videoDispatch: Dispatch<VideoAction>) => {
   });
 };
 
-const getTrimmerElements = (): Record<string, HTMLDivElement> => {
+const getTrimmerElements = () => {
   const portion = document.getElementById("trimmer-portion") as HTMLDivElement;
   const container = document.getElementById(
     "trimmer-container"
@@ -57,7 +59,12 @@ const getTrimmerElements = (): Record<string, HTMLDivElement> => {
     "trimmer-start-handler"
   ) as HTMLDivElement;
 
-  return { portion, container, startHandler, endHandler };
+  return { portion, container, startHandler, endHandler } as const;
 };
 
-export { getTrimmerElements, setTrimmerPortionProps, setVideoProps };
+export {
+  HANDLER_WIDTH,
+  getTrimmerElements,
+  setTrimmerPortionProps,
+  setVideoProps,
+};

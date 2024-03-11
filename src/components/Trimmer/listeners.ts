@@ -1,6 +1,7 @@
 import { VideoAction } from "@store/videoReducer";
 import { Dispatch } from "react";
 import {
+  HANDLER_WIDTH,
   getTrimmerElements,
   setTrimmerPortionProps,
   setVideoProps,
@@ -40,10 +41,14 @@ const handleMouseMove = (
 };
 
 const handleEndHandlerMove = (event: MouseEvent) => {
-  const { endHandler, container } = getTrimmerElements();
+  const { endHandler, container, startHandler } = getTrimmerElements();
 
-  const calculatedX = event.clientX - endHandler.offsetWidth * 2;
-  const calculatedMaxX = container.offsetWidth - endHandler.offsetWidth;
+  const calculatedX = event.clientX - HANDLER_WIDTH * 2;
+  const calculatedMaxX = container.offsetWidth - HANDLER_WIDTH;
+
+  const areHandlersTooClose = calculatedX - startHandler.offsetLeft <= 40;
+
+  if (areHandlersTooClose) return;
 
   endHandler.style.left = `${Math.min(calculatedMaxX, calculatedX)}px`;
 
@@ -51,9 +56,13 @@ const handleEndHandlerMove = (event: MouseEvent) => {
 };
 
 const handleStartHandlerMove = (event: MouseEvent) => {
-  const { startHandler } = getTrimmerElements();
+  const { startHandler, endHandler } = getTrimmerElements();
 
-  const calculatedX = event.clientX - startHandler.offsetWidth * 2;
+  const calculatedX = event.clientX - HANDLER_WIDTH * 2;
+
+  const areHandlersTooClose = endHandler.offsetLeft - calculatedX <= 40;
+
+  if (areHandlersTooClose) return;
 
   startHandler.style.left = `${Math.max(0, calculatedX)}px`;
 
@@ -65,7 +74,7 @@ const handleTrimmerPortionMove = (event: MouseEvent) => {
 
   const endHandlerX = endHandler.offsetLeft + event.movementX;
   const startHandlerX = startHandler.offsetLeft + event.movementX;
-  const endHandlerMaxX = container.offsetWidth - endHandler.offsetWidth;
+  const endHandlerMaxX = container.offsetWidth - HANDLER_WIDTH;
 
   const shouldStopMovement =
     endHandlerX >= endHandlerMaxX || startHandlerX <= 0;
