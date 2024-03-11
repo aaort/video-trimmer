@@ -1,4 +1,3 @@
-import { IVideo } from "@store/index";
 import { VideoAction } from "@store/videoReducer";
 import { getRoundedTimePercentage } from "@utils/getRoundedNumPercentage";
 import { Dispatch } from "react";
@@ -93,8 +92,8 @@ const setTrimmerPortionProps = () => {
   }px`;
 };
 
-const updateVideoProps = (
-  video: IVideo,
+const setVideoProps = (
+  videoDuration: number,
   videoDispatch: Dispatch<VideoAction>
 ) => {
   const { container, startHandler, endHandler } = getTrimmerElements();
@@ -111,10 +110,9 @@ const updateVideoProps = (
     container.clientWidth || 1
   );
 
-  const selectedTrimEndTime =
-    (video.videoDuration * selectedTrimEndPercentage) / 100;
+  const selectedTrimEndTime = (videoDuration * selectedTrimEndPercentage) / 100;
   const selectedTrimStartTime =
-    (video.videoDuration * selectedTrimStartPercentage) / 100;
+    (videoDuration * selectedTrimStartPercentage) / 100;
 
   videoDispatch({
     type: "trim",
@@ -138,9 +136,9 @@ export {
   getTrimmerElements,
   handleEndHandlerMove,
   handleMouseDown,
+  handleMouseMove,
+  handleMouseUp,
   handleStartHandlerMove,
   handleTrimmerPortionMove,
-  updateVideoProps,
-  handleMouseUp,
-  handleMouseMove,
+  setVideoProps,
 };
