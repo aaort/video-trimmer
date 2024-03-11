@@ -1,4 +1,4 @@
-import useVideo from "@hooks/useVideo";
+import useVideo from "@store/hook";
 import "@styles/trimmer.css";
 import { useEffect } from "react";
 import { handleMouseDown, handleMouseMove, handleMouseUp } from "./listeners";

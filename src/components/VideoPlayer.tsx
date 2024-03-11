@@ -1,4 +1,4 @@
-import useVideo from "@hooks/useVideo";
+import useVideo from "@store/hook";
 import Loader from "@icons/Loader";
 import PlayIcon from "@icons/Play";
 import Stop from "@icons/Stop";

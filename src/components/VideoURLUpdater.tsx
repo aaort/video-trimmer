@@ -1,5 +1,5 @@
-import useVideo from "@hooks/useVideo";
 import Edit from "@icons/Edit";
+import useVideo from "@store/hook";
 import "@styles/video-url-updater.css";
 import {
   ChangeEventHandler,

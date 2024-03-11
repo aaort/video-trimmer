@@ -1,4 +1,4 @@
-import useVideo from "@hooks/useVideo";
+import useVideo from "@store/hook";
 import "@styles/ruler.css";
 import { getVideoDurationSteps } from "@utils/getVideoDurationStep";
 
