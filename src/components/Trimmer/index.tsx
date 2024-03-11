@@ -1,7 +1,7 @@
 import useVideo from "@hooks/useVideo";
 import "@styles/trimmer.css";
 import { useEffect } from "react";
-import { handleMouseDown, handleMouseMove, handleMouseUp } from "./utils";
+import { handleMouseDown, handleMouseMove, handleMouseUp } from "./listeners";
 
 function Trimmer() {
   const [video, videoDispatch] = useVideo();
