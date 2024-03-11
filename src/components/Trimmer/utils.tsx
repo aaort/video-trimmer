@@ -44,11 +44,17 @@ const setVideoProps = (
   });
 };
 
-const getTrimmerElements = () => {
-  const portion = document.getElementById("trimmer-portion");
-  const container = document.getElementById("trimmer-container");
-  const endHandler = document.getElementById("trimmer-end-handler");
-  const startHandler = document.getElementById("trimmer-start-handler");
+const getTrimmerElements = (): Record<string, HTMLDivElement> => {
+  const portion = document.getElementById("trimmer-portion") as HTMLDivElement;
+  const container = document.getElementById(
+    "trimmer-container"
+  ) as HTMLDivElement;
+  const endHandler = document.getElementById(
+    "trimmer-end-handler"
+  ) as HTMLDivElement;
+  const startHandler = document.getElementById(
+    "trimmer-start-handler"
+  ) as HTMLDivElement;
 
   return { portion, container, startHandler, endHandler };
 };

@@ -17,11 +17,9 @@ const handleMouseUp = () => {
 const handleMouseMove = (event: MouseEvent) => {
   const { startHandler, endHandler, portion } = getTrimmerElements();
 
-  if (!startHandler || !endHandler || !portion) return;
-
-  const target = [startHandler, endHandler, portion].filter(
+  const target = [startHandler, endHandler, portion].find(
     (elem) => elem.getAttribute("data-dragging") === "true"
-  )[0];
+  );
 
   if (!target) return;
 
@@ -32,7 +30,6 @@ const handleMouseMove = (event: MouseEvent) => {
 
 const handleEndHandlerMove = (event: MouseEvent) => {
   const { endHandler } = getTrimmerElements();
-  if (!endHandler) return;
 
   const parent = endHandler.parentElement;
 
@@ -48,7 +45,6 @@ const handleEndHandlerMove = (event: MouseEvent) => {
 
 const handleStartHandlerMove = (event: MouseEvent) => {
   const { startHandler } = getTrimmerElements();
-  if (!startHandler) return;
 
   const parent = startHandler.parentElement;
 
@@ -62,9 +58,7 @@ const handleStartHandlerMove = (event: MouseEvent) => {
 };
 
 const handleTrimmerPortionMove = (event: MouseEvent) => {
-  const { endHandler, startHandler, portion, container } = getTrimmerElements();
-
-  if (!endHandler || !portion || !startHandler || !container) return;
+  const { endHandler, startHandler, container } = getTrimmerElements();
 
   const startHandlerX = startHandler.offsetLeft + event.movementX;
   const endHandlerX = endHandler.offsetLeft + event.movementX;
