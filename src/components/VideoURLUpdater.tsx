@@ -1,4 +1,5 @@
 import useVideo from "@hooks/useVideo";
+import Edit from "@icons/Edit";
 import "@styles/video-url-updater.css";
 import {
   ChangeEventHandler,
@@ -8,7 +9,6 @@ import {
   useState,
 } from "react";
 import { createPortal } from "react-dom";
-import Edit from "./icons/Edit";
 
 function VideoURLUpdater() {
   const [video, dispatch] = useVideo();

@@ -1,11 +1,11 @@
 import useVideo from "@hooks/useVideo";
+import Loader from "@icons/Loader";
+import PlayIcon from "@icons/Play";
+import Stop from "@icons/Stop";
+import VideoPrevious from "@icons/VideoPrevious";
 import "@styles/video-player.css";
 import { getTimeFromSeconds } from "@utils/getTimeFromSeconds";
 import { useEffect, useRef, useState } from "react";
-import Loader from "./icons/Loader";
-import PlayIcon from "./icons/Play";
-import Stop from "./icons/Stop";
-import VideoPrevious from "./icons/VideoPrevious";
 
 interface IPlayedLeft {
   left: string;
