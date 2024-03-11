@@ -1,6 +1,6 @@
 import useVideo from "@store/hook";
 import "@styles/ruler.css";
-import { getVideoDurationSteps } from "@utils/getVideoDurationStep";
+import { getVideoDurationSteps } from "./utils";
 
 function Ruler() {
   const [video] = useVideo();

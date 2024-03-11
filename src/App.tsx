@@ -1,6 +1,6 @@
-import Ruler from "@components/Ruler";
+import Ruler from "@components/Ruler/index";
 import Trimmer from "@components/Trimmer";
-import VideoPlayer from "@components/VideoPlayer";
+import VideoPlayer from "@components/VideoPlayer/index";
 import VideoURLUpdater from "@components/VideoURLUpdater";
 import "./App.css";
 
