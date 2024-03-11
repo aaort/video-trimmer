@@ -15,9 +15,9 @@ const handleMouseDown = (event: MouseEvent) => {
 const handleMouseUp = () => {
   const { endHandler, startHandler, portion } = getTrimmerElements();
 
-  [endHandler, portion, startHandler].filter(Boolean).forEach((elem) => {
-    elem!.setAttribute("data-dragging", "false");
-  });
+  for (const element of [endHandler, startHandler, portion]) {
+    element!.setAttribute("data-dragging", "false");
+  }
 };
 
 const handleMouseMove = (
