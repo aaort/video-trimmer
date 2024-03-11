@@ -69,47 +69,44 @@ const handleMouseDown = (props: HandleMouseDownProps) => {
 };
 
 const handleEndHandlerMove = (event: MouseEvent) => {
-  const target = document.getElementById("trimmer-end-handler");
-  if (!target) return;
+  const { endHandler } = getTrimmerElements();
+  if (!endHandler) return;
 
-  const parent = target.parentElement;
+  const parent = endHandler.parentElement;
 
   if (!parent) return;
 
-  const calculatedX = event.clientX - target.offsetWidth * 2;
-  const calculatedMaxX = parent.offsetWidth - target.offsetWidth;
+  const calculatedX = event.clientX - endHandler.offsetWidth * 2;
+  const calculatedMaxX = parent.offsetWidth - endHandler.offsetWidth;
 
-  target.style.left = `${Math.min(calculatedMaxX, calculatedX)}px`;
+  endHandler.style.left = `${Math.min(calculatedMaxX, calculatedX)}px`;
 
   setTrimmerPortionProps();
 };
 
 const handleStartHandlerMove = (event: MouseEvent) => {
-  const target = document.getElementById("trimmer-start-handler");
-  if (!target) return;
+  const { startHandler } = getTrimmerElements();
+  if (!startHandler) return;
 
-  const parent = target.parentElement;
+  const parent = startHandler.parentElement;
 
   if (!parent) return;
 
-  const calculatedX = event.clientX - target.offsetWidth * 2;
+  const calculatedX = event.clientX - startHandler.offsetWidth * 2;
 
-  target.style.left = `${Math.max(0, calculatedX)}px`;
+  startHandler.style.left = `${Math.max(0, calculatedX)}px`;
 
   setTrimmerPortionProps();
 };
 
 const handleTrimmerPortionMove = (event: MouseEvent) => {
-  const target = document.getElementById("trimmer-portion");
-  const startHandler = document.getElementById("trimmer-start-handler");
-  const endHandler = document.getElementById("trimmer-end-handler");
-  const parent = target?.parentElement;
+  const { endHandler, startHandler, portion, container } = getTrimmerElements();
 
-  if (!endHandler || !target || !startHandler || !parent) return;
+  if (!endHandler || !portion || !startHandler || !container) return;
 
   const startHandlerX = startHandler.offsetLeft + event.movementX;
   const endHandlerX = endHandler.offsetLeft + event.movementX;
-  const endHandlerMaxX = parent.offsetWidth - endHandler.offsetWidth;
+  const endHandlerMaxX = container.offsetWidth - endHandler.offsetWidth;
 
   const shouldStopMovement =
     endHandlerX >= endHandlerMaxX || startHandlerX <= 0;
@@ -123,14 +120,12 @@ const handleTrimmerPortionMove = (event: MouseEvent) => {
 };
 
 const setTrimmerPortionProps = () => {
-  const endHandler = document.getElementById("trimmer-end-handler");
-  const startHandler = document.getElementById("trimmer-start-handler");
-  const trimmerPortion = document.getElementById("trimmer-portion");
+  const { portion, startHandler, endHandler } = getTrimmerElements();
 
-  if (!endHandler || !trimmerPortion || !startHandler) return;
+  if (!endHandler || !portion || !startHandler) return;
 
-  trimmerPortion.style.left = `${startHandler.offsetLeft}px`;
-  trimmerPortion.style.width = `${
+  portion.style.left = `${startHandler.offsetLeft}px`;
+  portion.style.width = `${
     endHandler.offsetLeft - startHandler.offsetLeft + startHandler.offsetWidth
   }px`;
 };
@@ -139,20 +134,18 @@ const updateVideoProps = (
   video: IVideo,
   videoDispatch: Dispatch<VideoAction>
 ) => {
-  const parent = document.getElementById("trimmer-container");
-  const startHandler = document.getElementById("trimmer-start-handler");
-  const endHandler = document.getElementById("trimmer-end-handler");
+  const { container, startHandler, endHandler } = getTrimmerElements();
 
-  if (!parent || !startHandler || !endHandler) return;
+  if (!container || !startHandler || !endHandler) return;
 
   const selectedTrimStartPercentage = getRoundedTimePercentage(
     startHandler.offsetLeft,
-    parent.clientWidth || 1
+    container.clientWidth || 1
   );
 
   const selectedTrimEndPercentage = getRoundedTimePercentage(
     endHandler.offsetLeft,
-    parent.clientWidth || 1
+    container.clientWidth || 1
   );
 
   const selectedTrimEndTime =
@@ -167,6 +160,15 @@ const updateVideoProps = (
       start: selectedTrimStartTime,
     },
   });
+};
+
+const getTrimmerElements = () => {
+  const portion = document.getElementById("trimmer-portion");
+  const container = document.getElementById("trimmer-container");
+  const endHandler = document.getElementById("trimmer-end-handler");
+  const startHandler = document.getElementById("trimmer-start-handler");
+
+  return { portion, container, startHandler, endHandler };
 };
 
 export {
