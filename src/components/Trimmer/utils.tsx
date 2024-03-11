@@ -11,11 +11,13 @@ const setTrimmerPortionProps = () => {
   }px`;
 };
 
-const setVideoProps = (
-  videoDuration: number,
-  videoDispatch: Dispatch<VideoAction>
-) => {
+const setVideoProps = (videoDispatch: Dispatch<VideoAction>) => {
   const { container, startHandler, endHandler } = getTrimmerElements();
+  const videoPlayer = document.getElementById(
+    "video-player"
+  ) as HTMLVideoElement;
+
+  const videoDuration = videoPlayer.duration;
 
   const selectedTrimStartPercentage = getRoundedTimePercentage(
     startHandler.offsetLeft,
