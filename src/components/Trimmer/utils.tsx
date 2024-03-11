@@ -5,14 +5,14 @@ import { Dispatch } from "react";
 const handleMouseDown = (event: MouseEvent) => {
   const target = event.target as HTMLDivElement;
 
-  target.setAttribute("data-dragging", "1");
+  target.setAttribute("data-dragging", "true");
 };
 
 const handleMouseUp = () => {
   const { endHandler, startHandler, portion } = getTrimmerElements();
 
   [endHandler, portion, startHandler].filter(Boolean).forEach((elem) => {
-    elem!.setAttribute("data-dragging", "0");
+    elem!.setAttribute("data-dragging", "false");
   });
 };
 
@@ -21,8 +21,8 @@ const handleMouseMove = (event: MouseEvent) => {
 
   if (!startHandler || !endHandler || !portion) return;
 
-  const target = [startHandler, endHandler, portion].filter((elem) =>
-    Number(elem.getAttribute("data-dragging"))
+  const target = [startHandler, endHandler, portion].filter(
+    (elem) => elem.getAttribute("data-dragging") === "true"
   )[0];
 
   if (!target) return;
