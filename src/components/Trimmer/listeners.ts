@@ -40,14 +40,10 @@ const handleMouseMove = (
 };
 
 const handleEndHandlerMove = (event: MouseEvent) => {
-  const { endHandler } = getTrimmerElements();
-
-  const parent = endHandler.parentElement;
-
-  if (!parent) return;
+  const { endHandler, container } = getTrimmerElements();
 
   const calculatedX = event.clientX - endHandler.offsetWidth * 2;
-  const calculatedMaxX = parent.offsetWidth - endHandler.offsetWidth;
+  const calculatedMaxX = container.offsetWidth - endHandler.offsetWidth;
 
   endHandler.style.left = `${Math.min(calculatedMaxX, calculatedX)}px`;
 
@@ -56,10 +52,6 @@ const handleEndHandlerMove = (event: MouseEvent) => {
 
 const handleStartHandlerMove = (event: MouseEvent) => {
   const { startHandler } = getTrimmerElements();
-
-  const parent = startHandler.parentElement;
-
-  if (!parent) return;
 
   const calculatedX = event.clientX - startHandler.offsetWidth * 2;
 
