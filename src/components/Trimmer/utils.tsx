@@ -1,5 +1,4 @@
 import { VideoAction } from "@store/videoReducer";
-import { getRoundedTimePercentage } from "@utils/getRoundedNumPercentage";
 import { Dispatch } from "react";
 
 const setTrimmerPortionProps = () => {
@@ -10,6 +9,10 @@ const setTrimmerPortionProps = () => {
     endHandler.offsetLeft - startHandler.offsetLeft + startHandler.offsetWidth
   }px`;
 };
+
+function getRoundedTimePercentage(num: number, baseNum: number) {
+  return Math.round((num / baseNum) * 100);
+}
 
 const setVideoProps = (videoDispatch: Dispatch<VideoAction>) => {
   const { container, startHandler, endHandler } = getTrimmerElements();
