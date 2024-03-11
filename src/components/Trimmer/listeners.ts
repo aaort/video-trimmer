@@ -71,8 +71,8 @@ const handleStartHandlerMove = (event: MouseEvent) => {
 const handleTrimmerPortionMove = (event: MouseEvent) => {
   const { endHandler, startHandler, container } = getTrimmerElements();
 
-  const startHandlerX = startHandler.offsetLeft + event.movementX;
   const endHandlerX = endHandler.offsetLeft + event.movementX;
+  const startHandlerX = startHandler.offsetLeft + event.movementX;
   const endHandlerMaxX = container.offsetWidth - endHandler.offsetWidth;
 
   const shouldStopMovement =
@@ -80,8 +80,8 @@ const handleTrimmerPortionMove = (event: MouseEvent) => {
 
   if (shouldStopMovement) return;
 
-  endHandler.style.left = `${Math.min(endHandlerMaxX, endHandlerX)}px`;
   startHandler.style.left = `${Math.max(0, startHandlerX)}px`;
+  endHandler.style.left = `${Math.min(endHandlerMaxX, endHandlerX)}px`;
 
   setTrimmerPortionProps();
 };
