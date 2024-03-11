@@ -21,13 +21,15 @@ const handleMouseMove = (event: MouseEvent) => {
 
   if (!startHandler || !endHandler || !portion) return;
 
-  if (Number(endHandler.getAttribute("data-dragging"))) {
-    handleEndHandlerMove(event);
-  } else if (Number(startHandler.getAttribute("data-dragging"))) {
-    handleStartHandlerMove(event);
-  } else if (Number(portion.getAttribute("data-dragging"))) {
-    handleTrimmerPortionMove(event);
-  }
+  const target = [startHandler, endHandler, portion].filter((elem) =>
+    Number(elem.getAttribute("data-dragging"))
+  )[0];
+
+  if (!target) return;
+
+  const targetId = target.id as keyof typeof MOUSE_MOVE_LISTENERS;
+
+  MOUSE_MOVE_LISTENERS[targetId](event);
 };
 
 const handleEndHandlerMove = (event: MouseEvent) => {
@@ -131,6 +133,12 @@ const getTrimmerElements = () => {
 
   return { portion, container, startHandler, endHandler };
 };
+
+const MOUSE_MOVE_LISTENERS = {
+  ["trimmer-portion"]: handleTrimmerPortionMove,
+  ["trimmer-end-handler"]: handleEndHandlerMove,
+  ["trimmer-start-handler"]: handleStartHandlerMove,
+} as const;
 
 export {
   getTrimmerElements,
