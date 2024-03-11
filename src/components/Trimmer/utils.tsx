@@ -5,8 +5,6 @@ import { Dispatch } from "react";
 const setTrimmerPortionProps = () => {
   const { portion, startHandler, endHandler } = getTrimmerElements();
 
-  if (!endHandler || !portion || !startHandler) return;
-
   portion.style.left = `${startHandler.offsetLeft}px`;
   portion.style.width = `${
     endHandler.offsetLeft - startHandler.offsetLeft + startHandler.offsetWidth
@@ -18,8 +16,6 @@ const setVideoProps = (
   videoDispatch: Dispatch<VideoAction>
 ) => {
   const { container, startHandler, endHandler } = getTrimmerElements();
-
-  if (!container || !startHandler || !endHandler) return;
 
   const selectedTrimStartPercentage = getRoundedTimePercentage(
     startHandler.offsetLeft,
