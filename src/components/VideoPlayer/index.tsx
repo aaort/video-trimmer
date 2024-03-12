@@ -20,7 +20,6 @@ const defaultPlayedLeft: IPlayedLeft = {
 function VideoPlayer() {
   const [video, videoDispatch] = useVideo();
   const videoPlayer = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isPlayDisabled, setIsPlayDisabled] = useState<boolean>(false);
   const [isReplayDisabled, setIsReplayDisabled] = useState<boolean>(false);
@@ -68,18 +67,19 @@ function VideoPlayer() {
   }, [isLoading, video, videoPlayer]);
 
   const handleTimeUpdate = () => {
+    const target = videoPlayer.current!;
+
     setPlayedLeft({
       ...playedLeft,
-      played: getTimeFromSeconds(videoPlayer.current!.currentTime),
+      played: getTimeFromSeconds(target.currentTime),
     });
 
-    if (videoPlayer.current!.currentTime >= video.trimEnd) {
-      setIsPlaying(false);
+    if (target.currentTime >= video.trimEnd) {
       setIsPlayDisabled(true);
-      videoPlayer.current!.pause();
+      target.pause();
     }
 
-    if (videoPlayer.current!.currentTime > video.trimStart) {
+    if (target.currentTime > video.trimStart) {
       setIsReplayDisabled(false);
     } else {
       setIsReplayDisabled(true);
@@ -92,9 +92,7 @@ function VideoPlayer() {
   };
 
   const handlePlayStopClick = () => {
-    videoPlayer.current![isPlaying ? "pause" : "play"]();
-
-    setIsPlaying(!isPlaying);
+    videoPlayer.current![!videoPlayer.current?.paused ? "pause" : "play"]();
   };
 
   return (
@@ -132,7 +130,7 @@ function VideoPlayer() {
           onClick={handlePlayStopClick}
           className="player-action-button"
         >
-          {isPlaying ? <Stop /> : <PlayIcon />}
+          {videoPlayer.current?.paused ? <PlayIcon /> : <Stop />}
         </button>
 
         <span>
