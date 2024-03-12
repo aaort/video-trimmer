@@ -46,7 +46,8 @@ const handleEndHandlerMove = (event: MouseEvent) => {
   const calculatedX = event.clientX - HANDLER_WIDTH * 2;
   const calculatedMaxX = container.offsetWidth - HANDLER_WIDTH;
 
-  const areHandlersTooClose = calculatedX - startHandler.offsetLeft <= 40;
+  const areHandlersTooClose =
+    calculatedX - startHandler.offsetLeft <= HANDLER_WIDTH;
 
   if (areHandlersTooClose) return;
 
@@ -60,7 +61,8 @@ const handleStartHandlerMove = (event: MouseEvent) => {
 
   const calculatedX = event.clientX - HANDLER_WIDTH * 2;
 
-  const areHandlersTooClose = endHandler.offsetLeft - calculatedX <= 40;
+  const areHandlersTooClose =
+    endHandler.offsetLeft - calculatedX <= HANDLER_WIDTH;
 
   if (areHandlersTooClose) return;
 
