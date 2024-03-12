@@ -1,4 +1,4 @@
-function getTimeFromSeconds(seconds: number) {
+const getTimeFromSeconds = (seconds: number) => {
   const minutes = Math.floor(seconds / 60);
   let remainingSeconds = (seconds % 60).toFixed(1);
 
@@ -12,6 +12,20 @@ function getTimeFromSeconds(seconds: number) {
   const formattedSeconds = String(remainingSeconds).padStart(2, "0");
 
   return `${formattedMinutes}:${formattedSeconds}`;
-}
+};
 
-export { getTimeFromSeconds };
+const getPlayerElements = () => {
+  const videoPlayer = document.getElementById(
+    "video-player"
+  ) as HTMLVideoElement;
+  const playButton = document.getElementById(
+    "play-button"
+  ) as HTMLButtonElement;
+  const replayButton = document.getElementById(
+    "replay-button"
+  ) as HTMLButtonElement;
+
+  return { videoPlayer, playButton, replayButton };
+};
+
+export { getPlayerElements, getTimeFromSeconds };

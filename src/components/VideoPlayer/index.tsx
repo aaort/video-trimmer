@@ -5,7 +5,7 @@ import VideoPrevious from "@icons/VideoPrevious";
 import useVideo from "@store/hook";
 import "@styles/video-player.css";
 import { useEffect, useRef, useState } from "react";
-import { getTimeFromSeconds } from "./utils";
+import { getPlayerElements, getTimeFromSeconds } from "./utils";
 
 interface IPlayedLeft {
   left: string;
@@ -19,10 +19,8 @@ const defaultPlayedLeft: IPlayedLeft = {
 
 function VideoPlayer() {
   const [video, videoDispatch] = useVideo();
-  const videoPlayer = useRef<HTMLVideoElement>(null);
+  const videoPlayerRef = useRef<HTMLVideoElement>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isPlayDisabled, setIsPlayDisabled] = useState<boolean>(false);
-  const [isReplayDisabled, setIsReplayDisabled] = useState<boolean>(false);
 
   const [playedLeft, setPlayedLeft] = useState({
     ...defaultPlayedLeft,
@@ -30,69 +28,61 @@ function VideoPlayer() {
   });
 
   useEffect(() => {
-    const videoPlayerCurrent = videoPlayer.current;
+    if (isLoading) return;
+    const { videoPlayer } = getPlayerElements();
 
     const onVideoURLChange = () => {
-      videoDispatch({
-        type: "set-duration",
-        payload: videoPlayerCurrent!.duration,
-      });
+      videoDispatch({ type: "set-duration", payload: videoPlayer.duration });
     };
 
-    videoPlayerCurrent?.addEventListener("durationchange", onVideoURLChange);
+    videoPlayer.addEventListener("durationchange", onVideoURLChange);
 
     return () => {
-      videoPlayerCurrent?.removeEventListener(
-        "durationchange",
-        onVideoURLChange
-      );
+      videoPlayer.removeEventListener("durationchange", onVideoURLChange);
     };
-  }, [video.videoUrl, videoDispatch]);
+  }, [isLoading, video.videoUrl, videoDispatch]);
 
   useEffect(() => {
     if (isLoading) return;
-    if (videoPlayer.current!.currentTime < video.trimEnd) {
-      setIsPlayDisabled(false);
-    }
-  }, [isLoading, video]);
+    const { videoPlayer, playButton } = getPlayerElements();
 
-  useEffect(() => {
-    if (isLoading) return;
     setPlayedLeft({
       left: getTimeFromSeconds(video.trimEnd),
       played: getTimeFromSeconds(video.trimStart),
     });
 
-    videoPlayer.current!.currentTime = video.trimStart;
-  }, [isLoading, video, videoPlayer]);
+    playButton.disabled = !(videoPlayer.currentTime <= video.trimEnd);
+    videoPlayer.currentTime = video.trimStart;
+  }, [isLoading, video]);
 
   const handleTimeUpdate = () => {
-    const target = videoPlayer.current!;
+    const { playButton, replayButton, videoPlayer } = getPlayerElements();
 
     setPlayedLeft({
       ...playedLeft,
-      played: getTimeFromSeconds(target.currentTime),
+      played: getTimeFromSeconds(videoPlayer.currentTime),
     });
 
-    if (target.currentTime >= video.trimEnd) {
-      setIsPlayDisabled(true);
-      target.pause();
+    // Player current time reached the trim end time
+    if (videoPlayer.currentTime >= video.trimEnd) {
+      playButton.disabled = true;
+      videoPlayer.pause();
     }
 
-    if (target.currentTime > video.trimStart) {
-      setIsReplayDisabled(false);
-    } else {
-      setIsReplayDisabled(true);
-    }
+    replayButton.disabled = !(videoPlayer.currentTime > video.trimStart);
   };
 
   const handleReplay = () => {
-    setIsPlayDisabled(false);
-    videoPlayer.current!.currentTime = video.trimStart;
+    const { playButton, videoPlayer } = getPlayerElements();
+
+    playButton.disabled = false;
+    videoPlayer.currentTime = video.trimStart;
   };
 
   const handlePlayStopClick = () => {
-    videoPlayer.current![!videoPlayer.current?.paused ? "pause" : "play"]();
+    const { videoPlayer } = getPlayerElements();
+
+    videoPlayer[!videoPlayer.paused ? "pause" : "play"]();
   };
 
   return (
@@ -106,9 +96,9 @@ function VideoPlayer() {
 
         <video
           id="video-player"
-          ref={videoPlayer}
           hidden={isLoading}
           src={video.videoUrl}
+          ref={videoPlayerRef}
           data-loading={isLoading}
           onTimeUpdate={handleTimeUpdate}
           onLoadStart={() => setIsLoading(true)}
@@ -118,19 +108,19 @@ function VideoPlayer() {
 
       <div className="player-actions">
         <button
+          id="replay-button"
           onClick={handleReplay}
-          disabled={isReplayDisabled}
           className="player-action-button"
         >
           <VideoPrevious />
         </button>
 
         <button
-          disabled={isPlayDisabled}
+          id="play-button"
           onClick={handlePlayStopClick}
           className="player-action-button"
         >
-          {videoPlayer.current?.paused ? <PlayIcon /> : <Stop />}
+          {videoPlayerRef.current?.paused ? <PlayIcon /> : <Stop />}
         </button>
 
         <span>
