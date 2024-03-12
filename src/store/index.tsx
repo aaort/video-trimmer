@@ -13,7 +13,7 @@ const initialVideo: IVideo = {
   trimStart: 0,
   videoDuration: 15,
   videoUrl:
-    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
 };
 
 interface VideoContextType {
