@@ -3,8 +3,8 @@ import { Dispatch } from "react";
 import {
   HANDLER_WIDTH,
   getTrimmerElements,
-  setTrimmerPortionProps,
-  setVideoProps,
+  updateTrimmerPortion,
+  updateVideo,
 } from "./utils";
 
 const handleMouseDown = (event: MouseEvent) => {
@@ -37,7 +37,7 @@ const handleMouseMove = (
 
   MOUSE_MOVE_LISTENERS[targetId](event);
 
-  setVideoProps(videoDispatch);
+  updateVideo(videoDispatch);
 };
 
 const handleEndHandlerMove = (event: MouseEvent) => {
@@ -53,7 +53,7 @@ const handleEndHandlerMove = (event: MouseEvent) => {
 
   endHandler.style.left = `${Math.min(calculatedMaxX, calculatedX)}px`;
 
-  setTrimmerPortionProps();
+  updateTrimmerPortion();
 };
 
 const handleStartHandlerMove = (event: MouseEvent) => {
@@ -68,7 +68,7 @@ const handleStartHandlerMove = (event: MouseEvent) => {
 
   startHandler.style.left = `${Math.max(0, calculatedX)}px`;
 
-  setTrimmerPortionProps();
+  updateTrimmerPortion();
 };
 
 const handleTrimmerPortionMove = (event: MouseEvent) => {
@@ -86,7 +86,7 @@ const handleTrimmerPortionMove = (event: MouseEvent) => {
   startHandler.style.left = `${Math.max(0, startHandlerX)}px`;
   endHandler.style.left = `${Math.min(endHandlerMaxX, endHandlerX)}px`;
 
-  setTrimmerPortionProps();
+  updateTrimmerPortion();
 };
 
 const MOUSE_MOVE_LISTENERS = {

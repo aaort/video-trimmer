@@ -3,7 +3,7 @@ import { Dispatch } from "react";
 
 const HANDLER_WIDTH = 20;
 
-const setTrimmerPortionProps = () => {
+const updateTrimmerPortion = () => {
   const { portion, startHandler, endHandler } = getTrimmerElements();
 
   portion.style.left = `${startHandler.offsetLeft}px`;
@@ -16,7 +16,7 @@ function getRoundedTimePercentage(num: number, baseNum: number) {
   return Math.round((num / baseNum) * 100);
 }
 
-const setVideoProps = (videoDispatch: Dispatch<VideoAction>) => {
+const updateVideo = (videoDispatch: Dispatch<VideoAction>) => {
   const { container, startHandler, endHandler } = getTrimmerElements();
   const videoPlayer = document.getElementById(
     "video-player"
@@ -62,9 +62,4 @@ const getTrimmerElements = () => {
   return { portion, container, startHandler, endHandler } as const;
 };
 
-export {
-  HANDLER_WIDTH,
-  getTrimmerElements,
-  setTrimmerPortionProps,
-  setVideoProps,
-};
+export { HANDLER_WIDTH, getTrimmerElements, updateTrimmerPortion, updateVideo };
