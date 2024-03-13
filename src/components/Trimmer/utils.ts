@@ -1,3 +1,4 @@
+import { getPlayerElements } from "@components/VideoPlayer/utils";
 import { VideoAction } from "@store/videoReducer";
 import { Dispatch } from "react";
 
@@ -18,31 +19,28 @@ function getRoundedTimePercentage(num: number, baseNum: number) {
 
 const updateVideo = (videoDispatch: Dispatch<VideoAction>) => {
   const { container, startHandler, endHandler } = getTrimmerElements();
-  const videoPlayer = document.getElementById(
-    "video-player"
-  ) as HTMLVideoElement;
+  const { videoPlayer } = getPlayerElements();
 
   const videoDuration = videoPlayer.duration;
 
-  const selectedTrimStartPercentage = getRoundedTimePercentage(
+  const trimStartPercentage = getRoundedTimePercentage(
     startHandler.offsetLeft,
-    container.clientWidth || 1
+    container.clientWidth
   );
 
-  const selectedTrimEndPercentage = getRoundedTimePercentage(
+  const trimEndPercentage = getRoundedTimePercentage(
     endHandler.offsetLeft,
-    container.clientWidth || 1
+    container.clientWidth
   );
 
-  const selectedTrimEndTime = (videoDuration * selectedTrimEndPercentage) / 100;
-  const selectedTrimStartTime =
-    (videoDuration * selectedTrimStartPercentage) / 100;
+  const trimEndTime = (videoDuration * trimEndPercentage) / 100;
+  const trimStartTime = (videoDuration * trimStartPercentage) / 100;
 
   videoDispatch({
     type: "trim",
     payload: {
-      end: selectedTrimEndTime,
-      start: selectedTrimStartTime,
+      end: trimEndTime,
+      start: trimStartTime,
     },
   });
 };
