@@ -51,7 +51,7 @@ function VideoPlayer() {
       played: getTimeFromSeconds(video.trimStart),
     });
 
-    playButton.disabled = !(videoPlayer.currentTime <= video.trimEnd);
+    playButton.disabled = videoPlayer.currentTime > video.trimEnd;
     videoPlayer.currentTime = video.trimStart;
   }, [isLoading, video]);
 
@@ -69,7 +69,7 @@ function VideoPlayer() {
       videoPlayer.pause();
     }
 
-    replayButton.disabled = !(videoPlayer.currentTime > video.trimStart);
+    replayButton.disabled = videoPlayer.currentTime <= video.trimStart;
   };
 
   const handleReplay = () => {
@@ -82,7 +82,7 @@ function VideoPlayer() {
   const handlePlayStopClick = () => {
     const { videoPlayer } = getPlayerElements();
 
-    videoPlayer[!videoPlayer.paused ? "pause" : "play"]();
+    videoPlayer[videoPlayer.paused ? "play" : "pause"]();
   };
 
   return (
