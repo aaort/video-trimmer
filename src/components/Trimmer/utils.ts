@@ -13,9 +13,9 @@ const updateTrimmerPortion = () => {
   }px`;
 };
 
-function getRoundedTimePercentage(num: number, baseNum: number) {
+const getRoundedTimePercentage = (num: number, baseNum: number) => {
   return Math.round((num / baseNum) * 100);
-}
+};
 
 const updateVideo = (videoDispatch: Dispatch<VideoAction>) => {
   const { container, startHandler, endHandler } = getTrimmerElements();
